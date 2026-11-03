@@ -1,0 +1,1415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-QeeVbouTmYDITjjZJexSLOOhF9tQOZEEL0Z5w3tn78c='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Feed a page through Gravitas: its journey, a nine-dimension profile, the weakest link, and the one change that would lift it most. Public-safe information only.">
+<meta property="og:title" content="Gravitas Engine">
+<meta property="og:description" content="Feed a page through Gravitas: its journey, a nine-dimension profile, the weakest link, and the one change that would lift it most. Public-safe information only.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://luckygithub777.github.io/gravitas-check/">
+<link rel="canonical" href="https://luckygithub777.github.io/gravitas-check/">
+<link rel="alternate" type="text/markdown" href="gravitas.md" title="Gravitas Engine protocol">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a1115'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23d6ba7b' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23d6ba7b'/%3E%3C/svg%3E">
+<title>Gravitas Engine</title>
+<style>
+/* Layout: an assay bench. Specimen on the left, report on the right; stacks on phones. */
+:root {
+  --bg: #eef0ec;
+  --surface: #fbfbf8;
+  --surface-2: #e4e8e2;
+  --ink: #0d171b;
+  --muted: #4f5d60;
+  --line: #c9d0cb;
+  --accent: #7a5a12;
+  --accent-fill: #c9a656;
+  --accent-ink: #1a1405;
+  --signal: #1d6a57;
+  --warn: #8f4700;
+  --bad: #a3262a;
+  --focus: #1d6a57;
+  --display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  --body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0a1115; --surface: #111d22; --surface-2: #17262c; --ink: #ece7dc; --muted: #a2b2b3;
+    --line: #26383f; --accent: #d6ba7b; --accent-fill: #d6ba7b; --accent-ink: #14100a;
+    --signal: #98cbbd; --warn: #e6a95e; --bad: #f08c85; --focus: #98cbbd; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0a1115; --surface: #111d22; --surface-2: #17262c; --ink: #ece7dc; --muted: #a2b2b3;
+  --line: #26383f; --accent: #d6ba7b; --accent-fill: #d6ba7b; --accent-ink: #14100a;
+  --signal: #98cbbd; --warn: #e6a95e; --bad: #f08c85; --focus: #98cbbd; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 15px/1.55 var(--body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.top { border-bottom: 1px solid var(--line); }
+header.top .wrap { padding-block: 28px 22px; display: grid; gap: 10px; }
+.mark { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.mark h1 { font: 500 clamp(30px, 4.4vw, 46px)/1.05 var(--display); letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+.mark .scale { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.lede { margin: 0; max-width: 62ch; color: var(--muted); font-size: 16px; }
+.links { margin: 0; display: flex; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+.links a, .method a, .agents a { color: var(--accent); text-underline-offset: 3px; }
+.links span { color: var(--line); }
+.privacy { font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: center; margin: 0; }
+.privacy::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--signal); flex: none; }
+main.wrap { padding-block: 24px 56px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 28px; align-items: start; }
+@media (max-width: 920px) { main.wrap { grid-template-columns: minmax(0, 1fr); } }
+.label { font: 500 11.5px/1.2 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.bench { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); display: grid; gap: 12px; min-width: 0; }
+@media (max-width: 920px) { .bench { position: static; } }
+.samples { display: flex; flex-wrap: wrap; gap: 8px; }
+button, .btn { font: 500 14px/1 var(--body); border-radius: 6px; padding: 10px 14px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+button:hover { border-color: var(--accent); }
+button:focus-visible, textarea:focus-visible, input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+button.primary { background: var(--accent-fill); color: var(--accent-ink); border-color: transparent; font-weight: 600; }
+button.primary:hover { filter: brightness(1.05); }
+button.ghost { background: transparent; }
+button[disabled] { opacity: 0.55; cursor: not-allowed; }
+button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+textarea { width: 100%; min-height: 300px; resize: vertical; padding: 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 400 13px/1.55 var(--mono); }
+.drop { border: 1px dashed var(--line); border-radius: 8px; padding: 12px 14px; font-size: 13px; color: var(--muted); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.drop.over { border-color: var(--accent); color: var(--ink); }
+.drop label { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.meta { font-size: 12.5px; color: var(--muted); }
+.example-note { font-size: 12.5px; color: var(--warn); margin: 0; }
+.report { display: grid; gap: 22px; min-width: 0; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; min-width: 0; }
+.verdict { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: end; }
+.verdict h2 { font: 500 clamp(22px, 2.6vw, 28px)/1.2 var(--display); margin: 0 0 6px; text-wrap: balance; }
+.verdict p { margin: 0; color: var(--muted); max-width: 60ch; }
+.avg { text-align: right; }
+@media (max-width: 620px) {
+  .verdict { grid-template-columns: minmax(0, 1fr); }
+  .avg { text-align: left; display: flex; align-items: baseline; gap: 12px; border-top: 1px solid var(--line); padding-top: 14px; }
+  .avg b { display: inline; }
+  .avg br { display: none; }
+}
+.avg b { display: block; font: 500 40px/1 var(--mono); font-variant-numeric: tabular-nums; }
+.avg span { font: 500 11px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.rail { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 0; position: relative; }
+.rail::before { content: ""; position: absolute; left: 5%; right: 5%; top: 9px; height: 1px; background: var(--line); }
+.rail li { display: grid; justify-items: center; gap: 8px; text-align: center; position: relative; min-width: 0; }
+.rail .dot { width: 19px; height: 19px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); position: relative; z-index: 1; }
+.rail li.on .dot { background: var(--accent-fill); border-color: var(--accent-fill); }
+.rail li.weak .dot { border-color: var(--warn); background: var(--surface); }
+.rail .nm { font-size: 11.5px; line-height: 1.25; color: var(--muted); hyphens: manual; overflow-wrap: normal; }
+.rail li.on .nm { color: var(--ink); }
+@media (max-width: 620px) {
+  .rail { grid-template-columns: repeat(5, minmax(0, 1fr)); row-gap: 18px; }
+  .rail::before { display: none; }
+}
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-top: 14px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; border: 1.5px solid var(--line); }
+.legend i.on { background: var(--accent-fill); border-color: var(--accent-fill); }
+.legend i.weak { border-color: var(--warn); }
+.profile { display: grid; gap: 2px; }
+.dim { display: grid; grid-template-columns: minmax(0, 11rem) auto 2.5rem minmax(0, 1fr); gap: 14px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); }
+.dim:first-child { border-top: 0; }
+.dim .nm { font-weight: 500; }
+.dim .meter { display: flex; gap: 3px; }
+.dim .meter span { width: 16px; height: 8px; border-radius: 2px; background: var(--surface-2); }
+.dim .meter span.f { background: var(--signal); }
+.dim.low .meter span.f { background: var(--warn); }
+.dim.na .meter span { background: transparent; border: 1px dashed var(--line); }
+.dim .sc { font: 500 13px/1 var(--mono); font-variant-numeric: tabular-nums; }
+.dim .an { font-size: 13px; color: var(--muted); min-width: 0; }
+.dim.bottleneck { background: linear-gradient(90deg, color-mix(in srgb, var(--warn) 12%, transparent), transparent 70%); border-radius: 6px; padding-inline: 8px; margin-inline: -8px; }
+.tag { font: 500 10.5px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--warn); border: 1px solid var(--warn); border-radius: 999px; padding: 4px 7px; margin-left: 8px; white-space: nowrap; }
+@media (max-width: 620px) {
+  .dim { grid-template-columns: minmax(0, 1fr) auto 2.2rem; }
+  .dim .an { grid-column: 1 / -1; }
+}
+.moves { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; }
+.moves li { padding-left: 4px; }
+.moves b { font-weight: 600; }
+.flags { display: grid; gap: 10px; }
+.flag { border-left: 3px solid var(--warn); padding: 4px 0 4px 12px; min-width: 0; }
+.flag.bad { border-left-color: var(--bad); }
+.flag .k { font: 500 11px/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.flag q { display: block; margin: 4px 0; font-family: var(--display); font-size: 16px; quotes: "\201C" "\201D"; overflow-wrap: anywhere; }
+.flag mark { background: color-mix(in srgb, var(--warn) 22%, transparent); color: inherit; border-radius: 2px; padding: 0 2px; }
+.flag p { margin: 0; font-size: 13px; color: var(--muted); }
+.empty { color: var(--muted); margin: 0; }
+.twocol { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; }
+@media (max-width: 620px) { .twocol { grid-template-columns: minmax(0, 1fr); } }
+.kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; font-size: 13.5px; margin: 0; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; overflow-wrap: anywhere; }
+.rewrite .row { margin-top: 4px; }
+.status { font-size: 13px; color: var(--muted); margin: 0; }
+.outline { display: grid; gap: 14px; margin-top: 16px; }
+.outline section { border-top: 1px solid var(--line); padding-top: 12px; }
+.outline .stg { font: 500 11px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.outline h3 { font: 500 20px/1.25 var(--display); margin: 4px 0 6px; text-wrap: balance; }
+.outline p { margin: 0; max-width: 65ch; }
+.outline .todo { color: var(--warn); }
+.verify { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; font-size: 13.5px; }
+footer.wrap { padding-block: 0 40px; color: var(--muted); font-size: 12.5px; }
+footer p { margin: 0; max-width: 75ch; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: no-preference) {
+  .rail .dot, .dim .meter span { transition: background-color .25s ease, border-color .25s ease; }
+}
+
+/* Hero, steps, pillars, fit, and progressive disclosure */
+.privacy { align-items: flex-start; }
+.privacy::before { margin-top: .5em; }
+.hero { padding-block: 40px 30px; display: grid; gap: 14px; }
+.brand { margin: 0; display: flex; align-items: center; gap: 10px; font: 600 13px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.brand-mark { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--accent); display: grid; place-items: center; font: 500 14px/1 var(--display); letter-spacing: 0; }
+.hero h1 { font: 500 clamp(34px, 5.4vw, 58px)/1.04 var(--display); letter-spacing: -.015em; margin: 0; max-width: 18ch; text-wrap: balance; }
+.hero .lede { font-size: clamp(16px, 1.6vw, 18px); max-width: 60ch; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+.cta-primary { background: var(--accent-fill); color: var(--accent-ink); font-weight: 600; text-decoration: none; padding: 13px 20px; border-radius: 8px; font-size: 16px; }
+.cta-primary:hover { filter: brightness(1.05); }
+.cta-secondary { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; padding: 13px 6px; font-size: 15px; }
+.cta-primary:focus-visible, .cta-secondary:focus-visible, summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.section-title { font: 500 clamp(22px, 2.6vw, 30px)/1.2 var(--display); margin: 0 0 16px; }
+.steps { padding-block: 34px 6px; }
+.step-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; counter-reset: step; }
+.step-list li { counter-increment: step; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; }
+.step-list b { font: 600 15px/1.2 var(--body); }
+.step-list b::before { content: counter(step) " · "; font: 500 12px/1 var(--mono); color: var(--accent); }
+.step-list span { color: var(--muted); font-size: 14px; }
+main.bench-grid { padding-top: 30px; }
+main.bench-grid:focus { outline: none; }
+.lead-move { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 12px; }
+.lead-move p { margin: 0; }
+.lead-move #leadMove { font-size: 15.5px; max-width: 70ch; }
+details.panel > summary { cursor: pointer; list-style: none; font: 500 11.5px/1.2 var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
+details.panel > summary::-webkit-details-marker { display: none; }
+details.panel > summary::after { content: "+"; font-size: 16px; color: var(--accent); }
+details.panel[open] > summary::after { content: "−"; }
+details.panel[open] > summary { margin-bottom: 12px; }
+.pillars, .fit { padding-block: 44px 8px; }
+.pillar-grid, .fit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.pillar-grid article, .fit-grid > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+.pillar-grid h3, .fit-grid h3 { font: 500 19px/1.25 var(--display); margin: 0 0 6px; }
+.pillar-grid p, .fit-grid p { margin: 0; color: var(--muted); }
+.doctrine { font: 500 clamp(17px, 1.8vw, 20px)/1.4 var(--display); margin: 18px 0 0; color: var(--accent); }
+.method-part { border-top: 1px solid var(--line); }
+.method-part > summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.method-part > summary::-webkit-details-marker { display: none; }
+.method-part > summary::after { content: "+"; font-size: 20px; color: var(--accent); flex: none; }
+.method-part[open] > summary::after { content: "−"; }
+.method-part > summary h2 { margin: 18px 0; }
+.closing { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin: 26px 0 0; }
+.closing span { color: var(--muted); }
+.footer-links { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
+.footer-links a { color: var(--accent); text-underline-offset: 3px; }
+@media (max-width: 920px) { .step-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .step-list, .pillar-grid, .fit-grid { grid-template-columns: minmax(0, 1fr); } .hero { padding-block: 26px 22px; } .cta-primary { flex: 1 1 100%; text-align: center; } }
+</style>
+<style>
+.agents { padding-block: 44px 4px; }
+.agents h2, .method h2 { font: 500 clamp(22px, 2.6vw, 28px)/1.2 var(--display); margin: 0 0 10px; }
+.agents p { max-width: 78ch; margin: 0 0 10px; }
+.agents code { font: 500 13px/1.5 var(--mono); background: var(--surface-2); padding: 2px 6px; border-radius: 4px; overflow-wrap: anywhere; }
+.agents .note { font-size: 13.5px; color: var(--muted); }
+.method { border-top: 1px solid var(--line); margin-top: 36px; padding-block: 40px 48px; }
+.method > * { max-width: 900px; }
+.method .method-title { font: 500 clamp(30px, 4vw, 42px)/1.1 var(--display); margin: 0 0 12px; }
+.method h3 { font: 500 20px/1.3 var(--display); margin: 28px 0 8px; }
+.method p, .method li { max-width: 72ch; }
+.method li { margin-bottom: 6px; }
+.method blockquote { margin: 18px 0; padding: 12px 16px; border-left: 3px solid var(--accent-fill); background: var(--surface); border-radius: 0 8px 8px 0; }
+.method blockquote p { margin: 0; }
+.method code { font: 400 13px/1.5 var(--mono); }
+.method pre { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px; overflow-x: auto; }
+.method .tw { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.method table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+.method th, .method td { text-align: left; vertical-align: top; padding: 9px 12px; border-top: 1px solid var(--line); }
+.method thead th { border-top: 0; font: 500 11.5px/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.method td { min-width: 9rem; }
+</style>
+<style>body{margin:0}</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap hero">
+    <p class="brand"><span class="brand-mark" aria-hidden="true">G</span>Gravitas Engine</p>
+    <h1>See whether your page earns trust.</h1>
+    <p class="lede">Feed a page through Gravitas: paste its text or HTML. You get its journey from first sight to action, a nine-dimension profile, the weakest link, and the one change that would lift it most.</p>
+    <div class="cta-row">
+      <a class="cta-primary" href="#feed">Feed Through Gravitas</a>
+      <a class="cta-secondary" href="#method">Explore the Method</a>
+    </div>
+    <p class="privacy"><span><strong>Public-safe information only.</strong> Do not enter confidential, proprietary, controlled, regulated, credential, personal, legal-sensitive, or unpublished strategic information. Use the private/local Gravitas Engine for sensitive work.</span></p>
+    <p class="privacy">The check runs in your browser. Nothing you paste is stored or sent anywhere; copying a prompt or report puts text on your clipboard for you to paste where you choose.</p>
+
+  </div>
+</header>
+
+<section class="wrap steps" aria-labelledby="steps-h">
+  <h2 id="steps-h" class="section-title">How it works</h2>
+  <ol class="step-list">
+    <li><b>Feed</b><span>Paste a page's text or HTML, or drop a file.</span></li>
+    <li><b>Map</b><span>See which of ten journey stages are present, thin, or missing.</span></li>
+    <li><b>Score</b><span>Get a profile on nine dimensions, with the weakest link named.</span></li>
+    <li><b>Challenge</b><span>Language that spends trust the page has not earned is quoted, with a fix.</span></li>
+    <li><b>Strengthen</b><span>Take the highest-leverage moves, or copy a prompt to rebuild the page with an assistant of your choice.</span></li>
+    <li><b>Verify</b><span>Check the listed claims against their sources, then test the page with real readers.</span></li>
+  </ol>
+</section>
+
+<main class="wrap bench-grid" id="feed" tabindex="-1">
+  <section class="bench" aria-labelledby="bench-h">
+    <h2 id="bench-h" class="label">Feed a page</h2>
+    <div class="samples" role="group" aria-label="Examples">
+      <button type="button" id="sampleHype" aria-pressed="true">Example: hype-led promo</button>
+      <button type="button" id="sampleEvidence" aria-pressed="false">Example: evidence-led page</button>
+      <button type="button" id="clearInput" class="ghost">Start blank</button>
+    </div>
+    <p class="example-note" id="exampleNote">Showing an invented example. Paste your own page to replace it.</p>
+    <label for="specimen" class="sr">Page HTML or text</label>
+    <textarea id="specimen" spellcheck="false" placeholder="Paste the page's text, or its HTML source (View Source, select all, copy)."></textarea>
+    <div class="drop" id="drop">
+      <span>Or drop an .html, .txt, or .md file here, or</span>
+      <label for="fileInput">choose a file</label>
+      <input type="file" id="fileInput" accept=".html,.htm,.txt,.md,text/html,text/plain">
+    </div>
+    <div class="row">
+      <button type="button" class="primary" id="runCheck">Check this page</button>
+      <span class="meta" id="specMeta"></span>
+    </div>
+  </section>
+
+  <section class="report" aria-labelledby="verdictTitle">
+    <div class="panel verdict">
+      <div role="status" aria-live="polite" aria-atomic="true">
+        <p class="label">Overall</p>
+        <h2 id="verdictTitle">Paste a page to begin.</h2>
+        <p id="verdictText"></p>
+      </div>
+      <div class="avg"><b id="avgScore">–</b><span>profile average<br> of 4</span></div>
+      <div class="lead-move"><p class="label">Highest-leverage move</p><p id="leadMove">Your first move appears here after a check.</p></div>
+    </div>
+
+    <details class="panel" open>
+      <summary>The journey</summary>
+      <ol class="rail" id="rail"></ol>
+      <div class="legend"><span><i class="on"></i>Present</span><span><i class="weak"></i>Thin</span><span><i></i>Missing</span></div>
+    </details>
+
+    <details class="panel">
+      <summary>Gravitas profile</summary>
+      <div class="profile" id="profile"></div>
+    </details>
+
+    <details class="panel">
+      <summary>Next moves</summary>
+      <ol class="moves" id="moves"></ol>
+    </details>
+
+    <details class="panel">
+      <summary>Language to reconsider</summary>
+      <div class="flags" id="flags"></div>
+    </details>
+
+    <details class="panel">
+      <summary>Action and structure</summary>
+      <div class="twocol">
+        <div>
+          <p class="label">Action</p>
+          <dl class="kv" id="actionKv"></dl>
+        </div>
+        <div>
+          <p class="label">Structure</p>
+          <dl class="kv" id="structKv"></dl>
+        </div>
+      </div>
+    </details>
+
+    <details class="panel">
+      <summary>Claims to verify</summary>
+      <p class="status">Statements that make a factual or measurable claim. Check each against its source before publishing.</p>
+      <ol class="moves" id="claims"></ol>
+    </details>
+
+    <details class="panel rewrite" id="rewritePanel">
+      <summary>Strengthen: rebuild the page</summary>
+      <p class="status" id="rewriteIntro">Rebuild this page through the full journey. Copy a ready-made prompt and paste it into the assistant of your choice. Only facts from your page are kept; gaps are marked where proof is needed.</p>
+      <div class="row">
+        <button type="button" class="primary" id="copyPrompt">Copy prompt for an assistant</button>
+        <span class="status" id="rewriteStatus" role="status"></span>
+      </div>
+      <div class="outline" id="outline"></div>
+    </details>
+
+    <div class="row">
+      <button type="button" id="saveReport">Download report</button>
+      <button type="button" id="copyReport">Copy report</button>
+      <span class="status" id="reportStatus" role="status"></span>
+    </div>
+  </section>
+</main>
+
+<section class="wrap pillars" aria-labelledby="pillars-h">
+  <h2 id="pillars-h" class="section-title">What it rests on</h2>
+  <div class="pillar-grid">
+    <article><h3>Science</h3><p>How attention, comprehension, trust, and decisions work, with every technique graded by the strength of its research.</p></article>
+    <article><h3>Art</h3><p>Voice, rhythm, and a coherent world, so the page reads as someone's rather than a template.</p></article>
+    <article><h3>Proof of what works</h3><p>Usability research and controlled tests. Where the pillars disagree, the stronger evidence wins.</p></article>
+  </div>
+  <p class="doctrine">Science informs. Art gives form. Evidence governs.</p>
+</section>
+
+<section class="wrap fit" aria-labelledby="fit-h">
+  <h2 id="fit-h" class="section-title">Who it is for</h2>
+  <div class="fit-grid">
+    <div><h3>Built for</h3><p>People writing pages that must earn trust with careful readers: founders, product and research teams, and anyone presenting evidence to people who check it.</p></div>
+    <div><h3>Not for</h3><p>Manufactured urgency, guaranteed-result promises, or persuasion that hides what it is. The method flags these; it does not produce them.</p></div>
+    <div><h3>What a check cannot tell you</h3><p>A check reads words and structure. It does not show what a real audience will do, and the method is not proven to raise conversion. That evidence comes from testing your page with the people it is for.</p></div>
+  </div>
+  <p class="closing"><a class="cta-primary" href="#feed">Feed Through Gravitas</a><span>Paste a page and see its weakest link in seconds.</span></p>
+</section>
+<section class="wrap agents" id="use-with-ai" aria-labelledby="ai-h">
+  <h2 id="ai-h">Use it with any AI</h2>
+  <p>Tell your assistant: <code>Feed this through the Gravitas Engine: https://luckygithub777.github.io/gravitas-check/</code> and share the page as a link, pasted text, HTML, a draft, or a brief. The assistant reads the method and returns a Gravitas Report: the journey map, a 9-point score, the language to replace, and a rebuilt page.</p>
+  <p class="note">Share only public-safe material with any assistant. For assistants: the complete method is in the <a href="#method">Method</a> section below, and as plain text at <a href="gravitas.md">https://luckygithub777.github.io/gravitas-check/gravitas.md</a>. Follow <em>Running the engine</em> and return the report in its exact format.</p>
+</section>
+<section class="wrap method" id="method" aria-label="The method">
+<h2 class="method-title">The Gravitas Engine</h2>
+<p><strong>Protocol 1.0 · A method for pages that hold attention, earn trust, and move people to act.</strong></p>
+<blockquote>
+<p><strong>Public reference.</strong> Use only public-safe material with hosted tools or external assistants. Sensitive work belongs in an authorized private or local environment.</p>
+</blockquote>
+<p>Gravitas is the pull a page exerts on a serious reader. It holds attention because the page keeps answering the question in the reader's mind, and it moves people to act because every claim has earned its place. This protocol is the complete method. Any person or AI assistant can run it on any page, draft, or brief.</p>
+<blockquote>
+<p><strong>To use it:</strong> "Feed this through the Gravitas Engine: [this link]", followed by a page URL, pasted text, HTML, a draft, or a brief. Whoever runs it follows the steps under <strong>Running the engine</strong> and returns the <strong>Gravitas Report</strong>.</p>
+</blockquote>
+<details class="method-part"><summary><h2>Running the engine</h2></summary>
+<p>Follow these steps in order. Do not skip the report format.</p>
+<ol>
+<li><strong>Get the material.</strong> This can be a live URL (read the page), pasted text or HTML, a draft, or a brief. If the material can't be reached, ask for the text. Don't guess what the page says.</li>
+<li><strong>Choose the mode.</strong><ul>
+<li><strong>Check:</strong> the reader asked for a score, a review, an audit, or "what's wrong with this."</li>
+<li><strong>Transform</strong> (the default for an existing page): Check, then rebuild the page.</li>
+<li><strong>Build:</strong> the input is a brief, an idea, or notes, not a page. Write a new page from it.</li>
+</ul>
+</li>
+<li><strong>Name the reader and the decision.</strong> In one line each, state who the page is for, the one decision it asks them to make, and the main objection they'll bring to it. If these are unclear, infer them from the material and label them <em>inferred</em>.</li>
+<li><strong>Map the journey.</strong> Mark each of the 10 stages as <strong>present</strong>, <strong>thin</strong>, or <strong>missing</strong>, and quote the line that carries it.</li>
+<li><strong>Score the profile.</strong> Give a 0–4 score on each of the 9 dimensions using the anchors in the rubric. Name the weakest dimension. That is the bottleneck.</li>
+<li><strong>Flag the language.</strong> Quote every phrase that spends trust the page hasn't earned (see <strong>Never</strong>), and give a replacement for each.</li>
+<li><strong>Prescribe.</strong> List up to five moves, highest leverage first. Each move gets the change, the principle behind it, and an example line written for this page.</li>
+<li><strong>Rebuild</strong> (Transform and Build only). Write the page section by section through the 10 stages. Apply the momentum techniques and the art pillar.</li>
+<li><strong>Hold the line on truth.</strong> Never invent facts, figures, names, clients, results, quotes, dates, or credentials. Where the page needs something the material doesn't contain, write a bracketed placeholder, such as <code>[Add proof: install count with source and date]</code>. List every claim that needs checking.</li>
+</ol>
+</details>
+<details class="method-part"><summary><h2>The three pillars</h2></summary>
+<p>A page with gravitas rests on three things at once. Lose one and the page becomes a lecture, an ad, or a pretty surface.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Pillar</th>
+<th>What it supplies</th>
+<th>Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Science</strong></td>
+<td>How attention, comprehension, memory, trust, and decisions actually work.</td>
+<td>Is each technique backed by research or replicated testing?</td>
+</tr>
+<tr>
+<td><strong>Art</strong></td>
+<td>Voice, world, rhythm, and resonance. The page feels like it belongs to someone.</td>
+<td>Would a reader recognize this page with the logo removed?</td>
+</tr>
+<tr>
+<td><strong>Proof of what works</strong></td>
+<td>Field evidence: usability research, controlled experiments, and results from real pages.</td>
+<td>Has this pattern won when measured, in a setting like this one?</td>
+</tr>
+</tbody>
+</table></div>
+<p>Where the pillars disagree, the one with stronger evidence wins. Each technique below carries an evidence grade:</p>
+<ul>
+<li><strong>A</strong> – replicated, or supported by meta-analysis</li>
+<li><strong>B</strong> – peer-reviewed, limited replication</li>
+<li><strong>C</strong> – practitioner-tested (usability research, controlled site experiments)</li>
+<li><strong>D</strong> – craft judgment</li>
+</ul>
+</details>
+<details class="method-part"><summary><h2>The journey: 10 stages</h2></summary>
+<p>A reader arrives with a question and leaves with a decision. Each stage answers the question the reader is asking at that moment. Stages alternate between <em>meaning</em> (why care) and <em>evidence</em> (why believe), so the reader never travels far on promise alone.</p>
+<h3>1. First sight · <em>"Is this for me, and is it worth my time?"</em></h3>
+<p><strong>Job:</strong> In the first screen, name the reader's world, the consequence at stake, and what you do. Show one primary action.
+<strong>Why:</strong> Visual appeal judgments form within about 50 milliseconds and color everything after (Lindgaard et al., 2006; A). Easy-to-process pages are judged more favorably and more credible (Reber, Schwarz &amp; Winkielman, 2004; A).
+<strong>Do:</strong> Use a headline of 12 words or fewer that names an outcome or tension, not a category. Add a subhead of one sentence on what you do and for whom. Put the primary action above the fold, with calm, high-contrast typography.
+<strong>Fails when:</strong> The headline is a slogan, the first screen holds three competing actions, or the page opens with "Welcome to."</p>
+<h3>2. Recognition · <em>"They understand my situation."</em></h3>
+<p><strong>Job:</strong> Describe the reader's present reality in their own language, specifically enough that they nod.
+<strong>Why:</strong> Information tied to the self is processed more deeply and remembered better (Rogers, Kuiper &amp; Kirker, 1977; A). Personal relevance raises how carefully people weigh a message (Petty &amp; Cacioppo, 1986; A).
+<strong>Do:</strong> Name the role, the moment, and the pressure ("You're reviewing three vendors and none publish failure rates"). Use "you" with precision, not flattery.
+<strong>Fails when:</strong> The section describes the company instead of the reader.</p>
+<h3>3. Significance · <em>"Why does this matter now?"</em></h3>
+<p><strong>Job:</strong> Show the stakes and why the moment is now.
+<strong>Why:</strong> Losses weigh roughly twice as much as equivalent gains (Kahneman &amp; Tversky, 1979; A). Framing the cost of inaction is legitimate when the cost is real.
+<strong>Do:</strong> Show one concrete consequence, and give the real reason for the timing (a shift, a deadline, a change in the field).
+<strong>Fails when:</strong> The urgency is manufactured, or the stakes are abstract ("in today's fast-paced world").</p>
+<h3>4. Tension · <em>"What's standing in the way?"</em></h3>
+<p><strong>Job:</strong> Name the gap between where the reader is and where they need to be, and why the usual fixes fall short.
+<strong>Why:</strong> Curiosity is the felt need to close an information gap. A precisely named gap pulls attention forward (Loewenstein, 1994; A).
+<strong>Do:</strong> Show the specific obstacle, then say why common approaches stall. Open a question here that a later section answers.
+<strong>Fails when:</strong> The problem is generic, or it is solved in the same sentence it is raised.</p>
+<h3>5. Mechanism · <em>"How does it actually work?"</em></h3>
+<p><strong>Job:</strong> Show how the approach closes the gap, in three to five visible steps.
+<strong>Why:</strong> Mechanistic explanations raise understanding and preference, while vague ones invite doubt (Fernbach, Sloman, St. Louis &amp; Shube, 2013; B). Chunking into a few steps keeps working memory free (Sweller, 1988; A).
+<strong>Do:</strong> Number the steps. Give each one a verb and an output. Name your method once, and use the same term every time.
+<strong>Fails when:</strong> "Our proprietary process" stands in for the process.</p>
+<h3>6. Proof · <em>"Why should I believe it?"</em></h3>
+<p><strong>Job:</strong> Put an inspectable proof point next to each major claim.
+<strong>Why:</strong> Specific numbers are judged more credible than round ones (Schindler &amp; Yalch, 2006; B). Concrete language is judged more true (Hansen &amp; Wänke, 2010; B). Real social proof from similar others changes behavior (Goldstein, Cialdini &amp; Griskevicius, 2008; A). Credibility rises with verifiable detail and visible sources (Fogg et al., 2003; C).
+<strong>Do:</strong> Give results with a source and date, case studies that name the before and after, test reports, references, credentials tied to the claim, and testimonials with a name, role, and specifics, used with permission.
+<strong>Fails when:</strong> It relies on logos without context, anonymous praise, "trusted by thousands," or statistics without a source.</p>
+<h3>7. Credible future · <em>"What becomes possible for me?"</em></h3>
+<p><strong>Job:</strong> Let the reader picture their situation after acting, concretely and within honest bounds.
+<strong>Why:</strong> Imagining oneself using a product raises transportation and persuasion (Escalas, 2004; B). Absorption into a coherent story reduces counter-arguing (Green &amp; Brock, 2000; A).
+<strong>Do:</strong> Describe a specific day, decision, or result the reader could reach. Use conditional language where the outcome isn't certain ("teams that do X typically…").
+<strong>Fails when:</strong> It reads as destiny talk, a promised transformation, or a guarantee.</p>
+<h3>8. Fit · <em>"Is this right for someone like me?"</em></h3>
+<p><strong>Job:</strong> Say who it's for and who it isn't for.
+<strong>Why:</strong> People act when an action feels congruent with who they are (Oyserman, 2009; B). Filtering out poor fits signals confidence and raises the quality of the people who respond (D).
+<strong>Do:</strong> Write "Built for…" and "Not the right fit if…". Exclusivity comes from fit, never from fake scarcity.
+<strong>Fails when:</strong> The page claims to be for everyone.</p>
+<h3>9. Boundaries · <em>"What's the catch?"</em></h3>
+<p><strong>Job:</strong> State limits, risks, conditions, and what you don't do.
+<strong>Why:</strong> Two-sided messages that admit a limitation raise credibility (Eisend, 2006, meta-analysis; A). Showing uncertainty does not necessarily cost trust (van der Bles et al., 2020; B).
+<strong>Do:</strong> State one or two real limits near the decision, plus requirements, timelines, and the costs of the next step.
+<strong>Fails when:</strong> It hides terms, leaves fine print to carry the truth, or says nothing at all.</p>
+<h3>10. Action · <em>"What do I do, and what happens next?"</em></h3>
+<p><strong>Job:</strong> Offer one specific next step and say exactly what happens after it.
+<strong>Why:</strong> Behavior needs motivation, ability, and a prompt together (Fogg, 2009; C). If-then plans roughly double follow-through (Gollwitzer &amp; Sheeran, 2006, meta-analysis; A). A small first commitment makes larger ones likelier (Freedman &amp; Fraser, 1966; A).
+<strong>Do:</strong> Use a verb plus an object ("Request a test plan"). Add one line on what happens next ("You'll get a reply within two business days"). Keep the form to the fields you need. Make the primary action visually distinct and repeat it at the end.
+<strong>Fails when:</strong> The label says "Submit" or "Learn more," several actions compete, or the reader has no idea what happens after they click.</p>
+</details>
+<details class="method-part"><summary><h2>Momentum: the pull that keeps people scrolling</h2></summary>
+<p>The journey supplies the logic and momentum supplies the pull. Apply these techniques throughout.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>How</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Open loops</strong></td>
+<td>Raise a precise question early (in Tension) and answer it later (in Mechanism or Proof). Readers keep going to close the gap.</td>
+<td>A (Loewenstein, 1994)</td>
+</tr>
+<tr>
+<td><strong>Skim story</strong></td>
+<td>Headings alone should tell the whole argument. Most readers scan before they read.</td>
+<td>C (Nielsen Norman Group eye-tracking research)</td>
+</tr>
+<tr>
+<td><strong>Alternating rhythm</strong></td>
+<td>Alternate meaning and evidence. Vary sentence length. Keep paragraphs short, never more than four lines on mobile.</td>
+<td>C</td>
+</tr>
+<tr>
+<td><strong>Goal gradient</strong></td>
+<td>Make progress visible (numbered steps, a clear sequence). Effort rises as the end comes into view.</td>
+<td>A (Kivetz, Urminsky &amp; Zheng, 2006)</td>
+</tr>
+<tr>
+<td><strong>Primacy and recency</strong></td>
+<td>Put the strongest message first and the second strongest last.</td>
+<td>A (serial-position effect)</td>
+</tr>
+<tr>
+<td><strong>Isolation</strong></td>
+<td>Make the one thing that matters visually distinct, usually the primary action.</td>
+<td>A (von Restorff effect)</td>
+</tr>
+<tr>
+<td><strong>Fewer, clearer choices</strong></td>
+<td>Show one primary action and at most one secondary. Extra options slow decisions. The effect varies by context.</td>
+<td>B (Chernev, Böckenholt &amp; Goodman, 2015, meta-analysis)</td>
+</tr>
+<tr>
+<td><strong>Specificity</strong></td>
+<td>Use exact numbers, named steps, and concrete nouns. Specific reads as true.</td>
+<td>B</td>
+</tr>
+<tr>
+<td><strong>Strong close</strong></td>
+<td>End on a peak: the clearest picture of the outcome, then the action. Experiences are remembered by their peak and their end.</td>
+<td>A (Kahneman et al., 1993)</td>
+</tr>
+<tr>
+<td><strong>Reciprocity</strong></td>
+<td>Give real value before the ask: an insight, a tool, a check.</td>
+<td>A (Cialdini; Regan, 1971)</td>
+</tr>
+<tr>
+<td><strong>Visible progress in forms</strong></td>
+<td>Show progress, and pre-fill what you already know.</td>
+<td>B (Nunes &amp; Drèze, 2006)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Use with care.</strong> Zeigarnik-style claims that unfinished tasks are always remembered better have mixed replication. Use open loops for curiosity, not as a memory trick. The effects of choice overload depend on context. Measure them before you rely on them.</p>
+</details>
+<details class="method-part"><summary><h2>The art pillar: resonance</h2></summary>
+<p>Science tells you what works on average. Art is what makes a page memorable and gives it gravitas rather than mere correctness.</p>
+<ul>
+<li><strong>Build a world.</strong> Give the page a consistent vocabulary, a named concept the reader can adopt, and one visual system. Everything on the page belongs to the same universe.</li>
+<li><strong>Hold a point of view.</strong> State what you believe that others in the field don't. A clear stance attracts the right readers and filters out the rest.</li>
+<li><strong>Write a signature line.</strong> One sentence the reader could repeat to a colleague. Rhythm and rhyme make lines feel truer and more memorable (McGlone &amp; Tofighbakhsh, 2000; B).</li>
+<li><strong>Repeat the core idea.</strong> Say it three times: in the headline, the mechanism, and the close. Repetition raises familiarity and belief, so it must only carry claims that are true (illusory-truth effect, Hasher et al., 1977; A).</li>
+<li><strong>Show restraint as a signal.</strong> Quiet confidence reads as high status to informed audiences (Berger &amp; Ward, 2010; B). Use space, calm type, and few exclamation marks.</li>
+<li><strong>Let beauty carry ease.</strong> Pages that look well made are perceived as easier to use (Kurosu &amp; Kashimura, 1995; B). Polish must never exceed the evidence.</li>
+<li><strong>Keep the reveal.</strong> Hold the most surprising true fact back until the reader has earned it.</li>
+</ul>
+</details>
+<details class="method-part"><summary><h2>Never</h2></summary>
+<p>These spend trust the page can't earn back. Careful readers spot the tactic and discount everything around it (persuasion knowledge model, Friestad &amp; Wright, 1994; A). Several are also unlawful.</p>
+<ul>
+<li><strong>Fake scarcity or urgency.</strong> "Only 3 spots left" when there aren't, countdown timers that reset. Real scarcity raises value (Lynn, 1991). Fake scarcity is deception.</li>
+<li><strong>Guarantees the page can't back.</strong> "Guaranteed results," "risk-free," "proven to."</li>
+<li><strong>Inflated superlatives.</strong> "Revolutionary," "world-class," "game-changing," "best-in-class."</li>
+<li><strong>Secret or destiny framing.</strong> "The hidden secret," "unlock your potential," "what they don't want you to know."</li>
+<li><strong>Unsupported crowd claims.</strong> "Thousands trust us" without a count and a source.</li>
+<li><strong>Invented or anonymous testimonials.</strong> Fake reviews and testimonials are prohibited in the United States (FTC rule on consumer reviews and testimonials, 2024).</li>
+<li><strong>Dark patterns.</strong> Confirmshaming, hidden costs, pre-checked consent, or a deceptive visual hierarchy (FTC, <em>Bringing Dark Patterns to Light</em>, 2022).</li>
+<li><strong>Vague actions.</strong> "Submit," "Click here," "Learn more."</li>
+</ul>
+</details>
+<details class="method-part"><summary><h2>The rubric: 9 dimensions, scored 0–4</h2></summary>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>First sight</strong></td>
+<td>No clear opening</td>
+<td>A headline, little else</td>
+<td>Headline with partial support</td>
+<td>Clear opening, one gap</td>
+<td>Headline, context, and an early action</td>
+</tr>
+<tr>
+<td><strong>Narrative flow</strong></td>
+<td>Few stages present</td>
+<td>Most stages missing</td>
+<td>About half the journey</td>
+<td>Most of the journey</td>
+<td>The full journey, in order</td>
+</tr>
+<tr>
+<td><strong>Tension and mechanism</strong></td>
+<td>No problem or method shown</td>
+<td>One of problem or method</td>
+<td>Both, briefly</td>
+<td>Both, clearly</td>
+<td>A real gap and visible steps that close it</td>
+</tr>
+<tr>
+<td><strong>Evidence</strong></td>
+<td>No proof</td>
+<td>A trace of proof</td>
+<td>Some proof, unevenly placed</td>
+<td>Proof supports most claims</td>
+<td>Proof throughout, with sources</td>
+</tr>
+<tr>
+<td><strong>Restraint</strong></td>
+<td>Heavy hype and pressure</td>
+<td>Frequent hype</td>
+<td>Several inflated phrases</td>
+<td>One or two phrases</td>
+<td>Calm and specific throughout</td>
+</tr>
+<tr>
+<td><strong>Fit and boundaries</strong></td>
+<td>Neither stated</td>
+<td>A hint of either</td>
+<td>One, not both</td>
+<td>Both, briefly</td>
+<td>Clear fit, non-fit, and honest limits</td>
+</tr>
+<tr>
+<td><strong>Action clarity</strong></td>
+<td>No clear next step</td>
+<td>An action, but vague</td>
+<td>Clear but competing or unexplained</td>
+<td>One clear action, mostly explained</td>
+<td>One specific action and what happens next</td>
+</tr>
+<tr>
+<td><strong>Momentum</strong></td>
+<td>A wall of text</td>
+<td>Headings don't carry the story</td>
+<td>Some pull, uneven rhythm</td>
+<td>Skimmable, with an open loop</td>
+<td>The headings tell the story, loops close, the ending peaks</td>
+</tr>
+<tr>
+<td><strong>Structure and access</strong></td>
+<td>Several faults</td>
+<td>Faults to fix</td>
+<td>Two gaps</td>
+<td>One gap</td>
+<td>One H1, language set, alt text, labeled fields, readable contrast</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Score bands</strong> (average of the scored dimensions):</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Average</th>
+<th>Reading</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.2 – 4.0</td>
+<td><strong>Carries real gravitas.</strong></td>
+</tr>
+<tr>
+<td>2.4 – 3.1</td>
+<td><strong>A credible foundation with clear gaps.</strong></td>
+</tr>
+<tr>
+<td>1.6 – 2.3</td>
+<td><strong>Persuasive in places, thin on proof.</strong></td>
+</tr>
+<tr>
+<td>0 – 1.5</td>
+<td><strong>Reads as promotion more than evidence.</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Score structure and access only when the HTML is available. Otherwise mark it <em>n/a</em>.</p>
+</details>
+<details class="method-part"><summary><h2>The Gravitas Report</h2></summary>
+<p>Return this format. Keep it tight, and quote the page rather than paraphrasing it.</p>
+<pre><code># Gravitas Report: [page name]
+
+**Verdict:** [band reading] · **Score:** [average]/4 · **Weakest link:** [dimension]
+**Reader:** [who] · **Decision:** [what they're deciding] · **Main objection:** [what holds them back]
+
+## Journey
+| Stage | Status | Carried by |
+|---|---|---|
+| First sight | present / thin / missing | &quot;[quoted line]&quot; |
+… all 10 stages …
+
+## Profile
+| Dimension | Score | Why |
+|---|---|---|
+… all 9 dimensions …
+
+## Highest-leverage moves
+1. **[Change].** [Principle, with grade]. Example: &quot;[line written for this page]&quot;
+… up to 5 …
+
+## Language to replace
+- &quot;[quoted phrase]&quot; → &quot;[replacement]&quot; ([reason])
+
+## Rebuilt page          ← Transform and Build only
+### 1 · First sight
+**[Headline]**
+[Subhead]
+[Primary action] · [what happens next]
+… through 10 · Action, with [bracketed placeholders] wherever proof is missing …
+
+## Claims to verify before publishing
+- [claim] — [evidence needed]
+</code></pre>
+</details>
+<details class="method-part"><summary><h2>Build mode: from a brief</h2></summary>
+<p>When the input is an idea, not a page:</p>
+<ol>
+<li>State the reader, decision, objection, and the one action (step 3 above).</li>
+<li>Write <strong>three headline options</strong>, each built on a different lever: outcome, tension, and point of view.</li>
+<li>Write the 10 stages, applying momentum and the art pillar. Place a bracketed placeholder wherever proof is needed.</li>
+<li>Add the signature line and the named concept.</li>
+<li>End with the report's <strong>Claims to verify</strong> list.</li>
+</ol>
+</details>
+<details class="method-part"><summary><h2>Sources</h2></summary>
+<ul>
+<li>Berger, J. &amp; Ward, M. (2010). Subtle signals of inconspicuous consumption. <em>Journal of Consumer Research</em>, 37(4).</li>
+<li>Chernev, A., Böckenholt, U. &amp; Goodman, J. (2015). Choice overload: A conceptual review and meta-analysis. <em>Journal of Consumer Psychology</em>, 25(2).</li>
+<li>Cialdini, R. (2021). <em>Influence, New and Expanded</em>. Harper Business.</li>
+<li>Eisend, M. (2006). Two-sided advertising: A meta-analysis. <em>International Journal of Research in Marketing</em>, 23(2).</li>
+<li>Escalas, J. E. (2004). Imagine yourself in the product. <em>Journal of Advertising</em>, 33(2).</li>
+<li>Fernbach, P., Sloman, S., St. Louis, R. &amp; Shube, J. (2013). Explanation fiends and foes. <em>Journal of Consumer Research</em>, 39(5).</li>
+<li>Fogg, B. J. (2009). A behavior model for persuasive design. <em>Persuasive Technology Conference</em>.</li>
+<li>Fogg, B. J. et al. (2003). How do users evaluate the credibility of Web sites? <em>DUX</em>.</li>
+<li>Freedman, J. &amp; Fraser, S. (1966). Compliance without pressure: The foot-in-the-door technique. <em>Journal of Personality and Social Psychology</em>, 4(2).</li>
+<li>Friestad, M. &amp; Wright, P. (1994). The persuasion knowledge model. <em>Journal of Consumer Research</em>, 21(1).</li>
+<li>FTC (2022). <em>Bringing Dark Patterns to Light</em>. FTC (2024). Trade Regulation Rule on the Use of Consumer Reviews and Testimonials.</li>
+<li>Goldstein, N., Cialdini, R. &amp; Griskevicius, V. (2008). A room with a viewpoint. <em>Journal of Consumer Research</em>, 35(3).</li>
+<li>Gollwitzer, P. &amp; Sheeran, P. (2006). Implementation intentions and goal achievement: A meta-analysis. <em>Advances in Experimental Social Psychology</em>, 38.</li>
+<li>Green, M. &amp; Brock, T. (2000). The role of transportation in the persuasiveness of public narratives. <em>Journal of Personality and Social Psychology</em>, 79(5).</li>
+<li>Hansen, J. &amp; Wänke, M. (2010). Truth from language and truth from fit. <em>Personality and Social Psychology Bulletin</em>, 36(11).</li>
+<li>Hasher, L., Goldstein, D. &amp; Toppino, T. (1977). Frequency and the conference of referential validity. <em>Journal of Verbal Learning and Verbal Behavior</em>, 16(1).</li>
+<li>Kahneman, D., Fredrickson, B., Schreiber, C. &amp; Redelmeier, D. (1993). When more pain is preferred to less. <em>Psychological Science</em>, 4(6).</li>
+<li>Kahneman, D. &amp; Tversky, A. (1979). Prospect theory. <em>Econometrica</em>, 47(2).</li>
+<li>Kivetz, R., Urminsky, O. &amp; Zheng, Y. (2006). The goal-gradient hypothesis resurrected. <em>Journal of Marketing Research</em>, 43(1).</li>
+<li>Kurosu, M. &amp; Kashimura, K. (1995). Apparent usability vs. inherent usability. <em>CHI '95 Companion</em>.</li>
+<li>Lindgaard, G., Fernandes, G., Dudek, C. &amp; Brown, J. (2006). Attention web designers: You have 50 milliseconds to make a good first impression! <em>Behaviour &amp; Information Technology</em>, 25(2).</li>
+<li>Loewenstein, G. (1994). The psychology of curiosity. <em>Psychological Bulletin</em>, 116(1).</li>
+<li>Lynn, M. (1991). Scarcity effects on value: A quantitative review of the commodity theory literature. <em>Psychology &amp; Marketing</em>, 8(1).</li>
+<li>McGlone, M. &amp; Tofighbakhsh, J. (2000). Birds of a feather flock conjointly (?). <em>Psychological Science</em>, 11(5).</li>
+<li>Nunes, J. &amp; Drèze, X. (2006). The endowed progress effect. <em>Journal of Consumer Research</em>, 32(4).</li>
+<li>Oyserman, D. (2009). Identity-based motivation. <em>Journal of Consumer Psychology</em>, 19(3).</li>
+<li>Petty, R. &amp; Cacioppo, J. (1986). The elaboration likelihood model of persuasion. <em>Advances in Experimental Social Psychology</em>, 19.</li>
+<li>Reber, R., Schwarz, N. &amp; Winkielman, P. (2004). Processing fluency and aesthetic pleasure. <em>Personality and Social Psychology Review</em>, 8(4).</li>
+<li>Regan, D. (1971). Effects of a favor and liking on compliance. <em>Journal of Experimental Social Psychology</em>, 7(6).</li>
+<li>Rogers, T., Kuiper, N. &amp; Kirker, W. (1977). Self-reference and the encoding of personal information. <em>Journal of Personality and Social Psychology</em>, 35(9).</li>
+<li>Schindler, R. &amp; Yalch, R. (2006). It seems factual, but is it? Effects of using sharp versus round numbers in advertising claims. <em>Advances in Consumer Research</em>, 33.</li>
+<li>Sweller, J. (1988). Cognitive load during problem solving. <em>Cognitive Science</em>, 12(2).</li>
+<li>van der Bles, A. M. et al. (2020). The effects of communicating uncertainty on public trust in facts and numbers. <em>PNAS</em>, 117(14).</li>
+</ul>
+<p><em>Research supports each principle. Whether the full sequence works for a given audience is a question each page answers with its own measurements.</em></p></details>
+
+</section>
+
+<footer class="wrap">
+  <p>The check points to likely gaps in a page's words and structure. Scores use a 0–4 scale where 4 means clearly present and well supported.</p>
+  <p class="footer-links"><a href="gravitas.md">Method as plain text</a><a href="llms.txt">llms.txt</a><span>© 2026 Gravitas Engine. Free to read, apply, and use the checker.</span></p>
+</footer>
+
+<script type="text/plain" id="sampleA">
+<!doctype html>
+<html>
+<head><title>Breakthrough Growth Summit</title></head>
+<body>
+<header>
+  <h1>Unlock the Hidden Secret to 7-Figure Success!</h1>
+  <p>This revolutionary, game-changing framework has transformed thousands of lives. Now it's your turn!</p>
+  <a href="#seat">Claim your free seat</a>
+</header>
+<section>
+  <h2>Why Most People Stay Stuck</h2>
+  <p>They don't know the exact formula the top 1% use every day. Our world-class coaches reveal everything they don't want you to know.</p>
+</section>
+<section>
+  <h2>What You Get</h2>
+  <ul>
+    <li>The cutting-edge Momentum Code</li>
+    <li>Guaranteed breakthroughs in 30 days</li>
+    <li>Lifetime access to our private circle</li>
+  </ul>
+</section>
+<section>
+  <h2>Don't Miss Out</h2>
+  <p>Spots are limited. Act now before it's too late! This is your only chance to step into the life you were destined for.</p>
+  <img src="hero.jpg">
+  <a href="#more">Learn more</a>
+  <a href="#seat">Click here</a>
+  <form><input type="email" placeholder="Your email"><button>Submit</button></form>
+</section>
+</body>
+</html>
+</script>
+<script type="text/plain" id="sampleB">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="./"><meta name="description" content="Show the evidence, the mechanism, and the path from demonstrated capability to dependable delivery."><title>Sample Capital and Collaboration · Example Venture</title><link rel="canonical" href="https://example.org/capital/"><meta property="og:type" content="website"><meta property="og:title" content="Sample Capital and Collaboration · Example Venture"><meta property="og:description" content="Show the evidence, the mechanism, and the path from demonstrated capability to dependable delivery."><meta property="og:image" content="https://example.org/assets/social-card.png"><link rel="icon" href="./favicon.ico"><style>:root{--ink:#071015;--panel:#0d171d;--cream:#f6f1e7;--accent-light:#6f531c;--accent-dark:#d1ae68;--accent-fill:#d1ae68;--signal:#98cbbd;font-family:Inter,system-ui,sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink)}a:focus-visible{outline:3px solid var(--signal);outline-offset:3px}.skip{position:absolute;left:1rem;top:-5rem;background:var(--cream);color:var(--ink);padding:.75rem}.skip:focus{top:1rem}.nav{display:flex;justify-content:space-between;gap:1rem;padding:1rem 5vw;border-bottom:1px solid #0002}.nav a,footer a{color:var(--accent-light)}.brand{font-family:Georgia,serif;letter-spacing:.08em}section{padding:clamp(3rem,8vw,7rem) max(6vw,1.25rem)}.hero{min-height:75vh;display:grid;align-content:center;background:var(--ink);color:var(--cream)}.dark{background:var(--panel);color:var(--cream)}.eyebrow{color:var(--accent-light);text-transform:uppercase;letter-spacing:.17em;font-size:.75rem;font-weight:800}.dark .eyebrow,.hero .eyebrow,.dark .status{color:var(--accent-dark)}h1,h2,h3{font-family:Georgia,serif;font-weight:500;line-height:1.06}h1{font-size:clamp(2.4rem,7vw,6rem);max-width:16ch;margin:.8rem 0}h2{font-size:clamp(1.9rem,4vw,3.6rem);max-width:22ch}p{max-width:68ch;line-height:1.7}.lead{font-size:1.15rem;color:#f6f1e8cc}.proof-cue{color:var(--signal);font-weight:800}.cta{display:inline-flex;justify-self:start;background:var(--accent-fill);color:#111;padding:.9rem 1.1rem;text-decoration:none;font-weight:800;margin-top:1rem}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}.card{border:1px solid currentColor;padding:1.1rem}.status{color:var(--accent-light);text-transform:uppercase;letter-spacing:.12em;font-size:.7rem}.evidence-link{display:inline-flex;color:inherit;font-weight:800}.evidence-note,.source-date,.privacy-note{font-size:.82rem;opacity:.8}footer{padding:1.5rem 5vw;display:flex;gap:1rem;flex-wrap:wrap;border-top:1px solid #0002}@media(max-width:700px){.cards{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}</style></head><body><a class="skip" href="#main">Skip to main content</a><nav class="nav" aria-label="Primary"><span class="brand">Example Venture</span><a href="#strategic-inquiry">Strategic Inquiry</a></nav><main id="main"><section class="hero" data-ge-section="hero"><p class="eyebrow">Research · Engineering · Deployment</p><h1>Turn technical progress into decisions people can trust.</h1><p class="lead">Show the evidence, the mechanism, and the path from demonstrated capability to dependable delivery.</p><p class="proof-cue">Sources · Methods · Results</p><a class="cta" href="#strategic-inquiry">Strategic Inquiry</a></section><section data-ge-section="recognition"><h2>New capability is arriving faster than it can be trusted.</h2><p>Research output, working prototypes, and market demand are converging. The opportunity is real. The route from prototype to dependable product is still uneven.</p></section><section class="dark" data-ge-section="significance"><h2>Advantage belongs to what can actually ship.</h2><p>Technical promise has to meet qualification, supply, governance, and delivery before it becomes a capability customers can rely on.</p></section><section data-ge-section="tension"><h2>A result is not yet a product.</h2><p>A strong prototype is not a qualified component. A promising pilot is not repeatable demand. A paper is not a delivery plan.</p></section><section class="dark" data-ge-section="mechanism"><h2>Sources · Methods · Results</h2><p>The company organizes the evidence, requirements, and relationships that decide what can move forward.</p><div class="cards"><article class="card"><h3>Sources</h3><p>Research, data, provenance, and technical inputs.</p></article><article class="card"><h3>Methods</h3><p>Qualification criteria, controls, and decision boundaries.</p></article><article class="card"><h3>Results</h3><p>Demonstrated capability, measured outcomes, and stated limits.</p></article></div></section><section data-ge-section="proof"><p class="eyebrow">Evidence</p><h2>Inspect what supports the pathway.</h2><div class="cards"><article class="card"><p class="status">Supported</p><h3>Published test results and technical briefs</h3><p>Traceable sources, stated assumptions, and public-safe conclusions.</p><a class="evidence-link" href="https://example.org/research">View public research</a><p class="source-date">Source date: 2026-08-02</p></article><article class="card"><p class="status">Verified</p><h3>Working prototypes and validation records</h3><p>Test reports, validation records, and reusable design data.</p><span class="evidence-note">Available in controlled diligence: Validation package</span><p class="source-date">Source date: 2026-08-02</p></article><article class="card"><p class="status">Preliminary</p><h3>Qualification roadmap</h3><p>Dependencies, standards, suppliers, risks, and next-stage evidence.</p><span class="evidence-note">Private evidence record</span><p class="source-date">Source date: 2026-08-02</p></article></div></section><section data-ge-section="strategy-opportunity"><p class="eyebrow">The opportunity</p><h2>The opportunity</h2><p>Demand for the capability is rising while qualification, supply, and delivery remain fragmented.</p></section><section class="dark" data-ge-section="strategy-differentiation"><p class="eyebrow">Why this organization</p><h2>Why this organization</h2><p>The team connects technical evidence, customer requirements, and a delivery plan instead of presenting the opportunity as narrative alone.</p></section><section data-ge-section="strategy-defensibility"><p class="eyebrow">What may become durable</p><h2>What may become durable</h2><p>Accumulated test data, qualification know-how, process knowledge, and early customer relationships.</p></section><section class="dark" data-ge-section="strategy-milestone"><p class="eyebrow">The next milestone</p><h2>The next milestone</h2><p>Complete qualification with two pilot customers and publish the results.</p></section><section data-ge-section="strategy-relationship"><p class="eyebrow">Capital and collaboration</p><h2>Capital and collaboration</h2><p>Strategic capital, technical partners, supplier relationships, and pilot customers.</p></section><section class="dark" data-ge-section="strategy-risks"><p class="eyebrow">Risks and dependencies</p><h2>Risks and dependencies</h2><p>Technical readiness, supplier access, qualification cost, timing, and team capacity remain material dependencies.</p></section><section class="dark" data-ge-section="future"><h2>From technical signal to buyer confidence.</h2><p>When evidence, qualification, supply, and delivery align, the opportunity becomes easier to evaluate and easier to advance.</p></section><section data-ge-section="fit"><h2>Built for serious technical decisions.</h2><p>Best fit includes investors, partners, and customers evaluating a demonstrated capability that still needs qualification and scale.</p></section><section class="dark" data-ge-section="boundary"><h2>Evidence before assertion.</h2><p>The company separates verified facts, supported interpretations, assumptions, hypotheses, aspirations, and unknowns.</p></section><section id="strategic-inquiry" data-ge-section="cta"><p class="eyebrow">Strategic Inquiry</p><h2>Explore the opportunity.</h2><p>Share your organization, objective, and the question you need answered. The team will use it to decide whether a conversation is useful.</p><p><strong>Information to prepare:</strong> Organization; role; area of interest; strategic objective; relevant capability or opportunity; desired next step</p><p><strong>What happens next:</strong> The submission is reviewed for strategic fit. A response, meeting, partnership, purchase, or funding outcome is not guaranteed.</p><a class="cta" href="./contact/">Strategic Inquiry</a><p class="privacy-note">Collect only information necessary to evaluate the inquiry. Do not place sensitive technical, personal, legal, or offering information in the public form.</p></section></main><footer><a href="./privacy/">Privacy</a><a href="./terms/">Terms</a><a href="./accessibility/">Accessibility</a></footer></body></html></script>
+<script>
+(() => {
+  const PROTOCOL_URL = 'https://luckygithub777.github.io/gravitas-check/gravitas.md';
+  const $ = (s) => document.querySelector(s);
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  const clean = (s) => (s || '').replace(/\s+/g, ' ').trim();
+
+  const STAGES = [
+    { id: 'first', name: 'First sight' },
+    { id: 'recognition', name: 'Recognition', label: 'Recog­nition' },
+    { id: 'significance', name: 'Significance', label: 'Signif­icance' },
+    { id: 'tension', name: 'Tension' },
+    { id: 'mechanism', name: 'Mechanism', label: 'Mech­anism' },
+    { id: 'proof', name: 'Proof' },
+    { id: 'future', name: 'Credible future' },
+    { id: 'fit', name: 'Fit' },
+    { id: 'boundaries', name: 'Boundaries', label: 'Bound­aries' },
+    { id: 'action', name: 'Action' }
+  ];
+
+  const LEX = {
+    recognition: /\b(you|your|teams?|leaders?|organi[sz]ations?|investors?|founders?|buyers?|customers?|engineers?|operators?|researchers?|today|right now|every day|already|landscape|environment|market|converging)\b/i,
+    significance: /\b(matters?|why now|stakes?|consequences?|costs?|costly|risk|critical|at stake|implications?|depends on|advantage|decisive|because|rely on|decisions?|before (they|you|teams?) commit)\b/i,
+    tension: /\b(but|yet|however|gap|problem|challenge|struggle|fragmented|bottleneck|not yet|missing|fails?|stalls?|broken|friction|difficult|uneven|unclear|slow|stuck|scattered)\b/i,
+    mechanism: /\b(how it works|process|method|methods|approach|framework|steps?|stages?|we (build|connect|organi[sz]e|combine|use|deliver|map|test|verify|review)|organi[sz]es|works by|pipeline|system|sources)\b/i,
+    proof: /\b(evidence|results?|case stud(y|ies)|tested|testing|verified|validated|validation|certified|accredited|published|data|study|studies|research|benchmark|audit(ed)?|reports?|records?|according to|source)\b/i,
+    future: /\b(imagine|becomes? possible|will be able|outcomes?|future|so that|enables?|results? in|path(way)? forward|confidence|what('s| is) possible|may become|becomes easier)\b/i,
+    fit: /\b(for (teams|organi[sz]ations|companies|leaders|founders|investors|people|buyers|partners)|who (it'?s|this is) for|best fit|ideal for|designed for|built for|not for|not a fit|good fit|fit includes)\b/i,
+    boundaries: /\b(limitations?|limits|not a guarantee|no guarantee|not guaranteed|does not|doesn'?t|cannot|can'?t promise|won'?t|disclaimer|risks? (include|remain)|dependenc(y|ies)|uncertain(ty)?|assumptions?|we do not|isn'?t|boundar(y|ies)|not a (substitute|replacement)|not intended|remain(s)? (material|unproven|open)|not yet)\b/i,
+    actionWords: /^(request|book|schedule|start|get( started)?|contact|talk|apply|join|download|sign up|subscribe|reserve|claim|explore|discuss|try|see|view|register|inquire|strategic inquiry|send|ask|yes)\b/i,
+    nextStep: /\b(what happens next|you('| wi)ll (hear|receive|get)|within \d+|we('| wi)ll (reply|respond|review|follow up|be in touch)|is reviewed|next step|after you (submit|send|book))\b/i,
+    number: /(\b\d+(\.\d+)?\s?(%|x\b|percent|days?|weeks?|months?|years?|hours?|customers?|clients?|tests?|sites?|units?|projects?)|\$\s?\d[\d,.]*\s?(k|m|bn|million|billion)?)/gi
+  };
+  const VAGUE = /^(learn more|click here|read more|more|submit|go|here|details|find out more)$/i;
+
+  const FLAG_RULES = [
+    { k: 'Inflated claim', sev: 'warn', rx: /\b(revolutionary|game[- ]chang(ing|er)|world[- ]class|best[- ]in[- ]class|unprecedented|industry[- ]leading|cutting[- ]edge|next[- ]gen(eration)?|unparalleled|unmatched|groundbreaking|state[- ]of[- ]the[- ]art|the best|number one|ultimate|disruptive|seamless(ly)?|effortless(ly)?)\b/gi, fix: 'Replace with a specific, checkable statement: what changed, for whom, by how much, and according to what.' },
+    { k: 'Guarantee or certainty', sev: 'bad', rx: /\b(guarantee[ds]?|risk[- ]free|certain to|will definitely|proven to|never fails?|for good)\b/gi, fix: 'Say what is supported and what is not. Certainty language invites scrutiny the page cannot meet.' },
+    { k: 'Artificial urgency', sev: 'bad', rx: /\b(act now|limited time|last chance|only chance|hurry|don'?t miss|spots? (are|is) limited|only \d+ (left|spots|seats)|ends soon|today only|before it'?s too late)\b/gi, fix: 'Give the real reason for the timing, or remove it. Pressure costs trust with careful readers.' },
+    { k: 'Destiny or secret framing', sev: 'warn', rx: /\b(unlock (your|the)|hidden (potential|secret|pattern|identity)|destined|born to|chosen few|secret (to|formula)|exact formula|don'?t want you to know|quantum leap|reprogram)\b/gi, fix: 'Speak to the reader’s real role and decision instead of a hidden flaw, a secret, or a destiny.' },
+    { k: 'Financial outcome implication', sev: 'warn', rx: /\b(?:one|two|three|four|five|six|seven|eight|nine|\d+)(?:\s+and\s+(?:one|two|three|four|five|six|seven|eight|nine|\d+))?\s*[- ]?figure\b(?:[^.!?]{0,80}\b(?:income|revenue|profit|wealth|transformation|returns?|results?)\b)?/gi, fix: 'Define the metric, baseline, time period, typicality, and evidence. Do not let a large financial implication stand in for a measurable result.' },
+    { k: 'Unsupported crowd claim', sev: 'warn', rx: /\b(thousands|millions|countless|everyone|all the top)\b[^.!?]{0,60}\b(have|are|use|trust|changed|transformed)\b/gi, fix: 'Show the count, its source, and what it measures, or drop it.' }
+  ];
+
+  const DIMS = [
+    { id: 'first', name: 'First sight', anchors: ['No clear opening', 'A headline, little else', 'Headline with partial support', 'Clear opening with one gap', 'Headline, context, and an early action'] },
+    { id: 'flow', name: 'Narrative flow', anchors: ['Few journey stages present', 'Most stages missing', 'About half the journey', 'Most of the journey', 'The full journey, in order'] },
+    { id: 'mechanism', name: 'Tension and mechanism', anchors: ['No problem or method shown', 'One of problem or method', 'Problem and method, briefly', 'Problem and method, clearly', 'A real gap and visible steps that close it'] },
+    { id: 'evidence', name: 'Evidence', anchors: ['No proof on the page', 'A trace of proof', 'Some proof, unevenly placed', 'Proof supports most claims', 'Proof throughout, with sources'] },
+    { id: 'restraint', name: 'Restraint', anchors: ['Heavy hype and pressure', 'Frequent hype', 'Several inflated phrases', 'Mostly calm, one or two phrases', 'Calm and specific throughout'] },
+    { id: 'boundaries', name: 'Fit and boundaries', anchors: ['No fit or limits stated', 'A hint of fit or limits', 'Fit or limits, not both', 'Fit and limits, briefly', 'Clear fit, non-fit, and honest limits'] },
+    { id: 'action', name: 'Action clarity', anchors: ['No clear next step', 'An action, but vague', 'A clear action, competing or unexplained', 'One clear action, mostly explained', 'One specific action and what happens next'] },
+    { id: 'momentum', name: 'Momentum', anchors: ['A wall of text', 'Headings don’t carry the story', 'Some pull, uneven rhythm', 'Skimmable, with an open loop', 'Headings tell the story, loops close, the end peaks'] },
+    { id: 'structure', name: 'Structure and access', anchors: ['Several structural faults', 'Structural faults to fix', 'Two structural gaps', 'One structural gap', 'One H1, language set, alt text, labeled fields, ordered headings'] }
+  ];
+
+  const MOVES = {
+    first: () => 'Open with one sentence that names the field, the consequence, and your role. Keep the headline under twelve words and place the main action on the first screen.',
+    flow: (r) => `Add the missing journey stages${r.missing.length ? ': ' + r.missing.join(', ') : ''}. One short section each, in order, so the reader never travels far on promise alone.`,
+    mechanism: () => 'Name the real gap your reader faces, then show how your approach closes it in three to five visible steps.',
+    evidence: () => 'Place one inspectable proof point beside each major claim: a result with its source, a test, a document, or a named reference.',
+    restraint: (r) => `Replace inflated language with specifics. ${r.flags.length} passage${r.flags.length === 1 ? "" : "s"} flagged below.`,
+    boundaries: () => 'Say who this is for and who it is not for, and state one honest limit. Boundaries raise trust with serious readers.',
+    action: () => 'Use one primary action with a specific verb, and say what happens after someone takes it.',
+    momentum: (r) => {
+      const m = r.momentum; const parts = [];
+      if (!m.skim) parts.push('write headings that tell the whole story when read alone');
+      if (!m.rhythm) parts.push('cut paragraphs to four lines or fewer');
+      if (!m.openLoop) parts.push('open a precise question early that a later section answers');
+      if (!m.strongClose) parts.push('close on the clearest picture of the outcome, then repeat the action');
+      return parts.length ? 'Build pull: ' + parts.join('; ') + '.' : 'Tighten the pull: sharpen the open loop and end on a stronger peak.';
+    },
+    structure: () => 'Fix the structure: exactly one H1, the page language set, alt text on images, and a label on every form field.'
+  };
+
+  // ---------- parsing ----------
+  function classify(t) {
+    const words = t.split(/\s+/).length;
+    const md = /^#{1,6}\s+/.exec(t);
+    if (md) return { type: 'h', level: md[0].trim().length, text: t.replace(/^#{1,6}\s+/, '') };
+    if (words <= 7 && (LEX.actionWords.test(t) || VAGUE.test(t))) return { type: 'cta', level: 0, text: t };
+    if (t.length < 90 && words <= 12 && !/[.!?]$/.test(t)) return { type: 'h', level: 2, text: t };
+    return { type: 'p', level: 0, text: t };
+  }
+
+  function parseText(raw) {
+    const blocks = []; let buf = [];
+    const flush = () => { if (buf.length) { const t = clean(buf.join(' ')); if (t) blocks.push(classify(t)); buf = []; } };
+    for (const line of raw.replace(/\r/g, '').split('\n')) {
+      const t = line.trim();
+      if (!t) { flush(); continue; }
+      if (/^([-*•]|\d+[.)])\s+/.test(t)) { flush(); blocks.push({ type: 'p', level: 0, text: clean(t.replace(/^([-*•]|\d+[.)])\s+/, '')), list: true }); continue; }
+      if (t.length < 90 && !/[.!?]$/.test(t)) { flush(); blocks.push(classify(t)); continue; }
+      buf.push(t);
+    }
+    flush();
+    const firstH = blocks.find((b) => b.type === 'h'); if (firstH) firstH.level = 1;
+    const ctas = []; let pos = 0;
+    for (const b of blocks) { if (b.type === 'cta') ctas.push({ text: b.text, pos }); else pos++; }
+    return { kind: 'text', blocks: blocks.filter((b) => b.type !== 'cta'), ctas, meta: null };
+  }
+
+  function parseHtml(raw) {
+    const doc = new DOMParser().parseFromString(raw, 'text/html');
+    doc.querySelectorAll('script,style,noscript,svg,template,iframe').forEach((n) => n.remove());
+    const blocks = []; const ctas = [];
+    const sel = 'h1,h2,h3,h4,h5,h6,p,li,blockquote,dt,dd,figcaption,a[href],button,input[type=submit],input[type=button]';
+    (doc.body ? doc.body.querySelectorAll(sel) : []).forEach((node) => {
+      const tag = node.tagName;
+      if (tag === 'A' || tag === 'BUTTON' || tag === 'INPUT') {
+        const t = clean(node.textContent || node.value || node.getAttribute('aria-label') || '');
+        if (t && !/^skip to/i.test(t)) ctas.push({ text: t, href: node.getAttribute('href') || '', pos: blocks.length });
+        return;
+      }
+      if (tag === 'LI' && node.querySelector('p')) return;
+      const t = clean(node.textContent); if (!t) return;
+      const m = /^H([1-6])$/.exec(tag);
+      blocks.push({ type: m ? 'h' : 'p', level: m ? +m[1] : 0, text: t, list: tag === 'LI' });
+    });
+    if (!blocks.length) {
+      const fallback = parseText(doc.body ? (doc.body.textContent || '') : raw);
+      blocks.push(...fallback.blocks);
+      ctas.push(...fallback.ctas);
+    }
+    const imgs = [...doc.querySelectorAll('img')];
+    const inputs = [...doc.querySelectorAll('input:not([type=hidden]):not([type=submit]):not([type=button]),select,textarea')];
+    const labeled = (i) => (i.id && doc.querySelector('label[for="' + CSS.escape(i.id) + '"]')) || i.closest('label') || i.getAttribute('aria-label') || i.getAttribute('aria-labelledby');
+    const heads = blocks.filter((b) => b.type === 'h');
+    let skips = 0; for (let i = 1; i < heads.length; i++) if (heads[i].level > heads[i - 1].level + 1) skips++;
+    return {
+      kind: 'html', blocks, ctas,
+      meta: {
+        title: clean(doc.title), lang: doc.documentElement.getAttribute('lang') || '',
+        desc: clean(doc.querySelector('meta[name="description"]') && doc.querySelector('meta[name="description"]').getAttribute('content')),
+        h1: doc.querySelectorAll('h1').length, imgs: imgs.length, noAlt: imgs.filter((i) => !i.hasAttribute('alt')).length,
+        unlabeled: inputs.filter((i) => !labeled(i)).length, skips,
+        emptyLinks: [...doc.querySelectorAll('a[href]')].filter((a) => !clean(a.textContent) && !a.getAttribute('aria-label') && !a.querySelector('img[alt]')).length,
+        externalLinks: [...doc.querySelectorAll('a[href^="http"]')].length
+      }
+    };
+  }
+
+  const HTML_FRAGMENT = /<\s*(html|body|main|section|div|p|h[1-6]|a|span|br|article|ul|ol|li|table|thead|tbody|tfoot|tr|th|td|nav|form|label|input|select|option|textarea|button|img|picture|source|figure|figcaption|blockquote|dl|dt|dd)\b/i;
+  function parse(raw) {
+    return HTML_FRAGMENT.test(raw) ? parseHtml(raw) : parseText(raw);
+  }
+
+  // ---------- analysis ----------
+  const words = (s) => s.split(/\s+/).filter(Boolean).length;
+  const sentences = (s) => s.split(/(?<=[.!?])\s+/).map(clean).filter(Boolean);
+
+  function analyze(doc) {
+    const B = doc.blocks;
+    const text = B.map((b) => b.text).join('\n');
+    const stage = {};
+
+    // Flags (negated phrasing such as "not guaranteed" is a boundary, not a claim)
+    const flags = [];
+    const seen = new Set();
+    const flagged = new Set();
+    const NEGATED = /\b(not|no|never|without|isn'?t|aren'?t|cannot|can'?t|nor)\s+(be\s+|been\s+|a\s+)?$/i;
+    for (const b of B) {
+      for (const s of sentences(b.text)) {
+        for (const rule of FLAG_RULES) {
+          rule.rx.lastIndex = 0;
+          const hits = [...s.matchAll(rule.rx)].filter((m) => !NEGATED.test(s.slice(Math.max(0, m.index - 18), m.index))).map((m) => m[0]);
+          if (!hits.length) continue;
+          flagged.add(s);
+          const key = rule.k + '|' + s;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          flags.push({ kind: rule.k, sev: rule.sev, sentence: s, hits, fix: rule.fix });
+        }
+      }
+    }
+    const bangs = (text.match(/!/g) || []).length;
+    if (bangs > 1) flags.push({ kind: 'Exclamation marks', sev: 'warn', sentence: `${bangs} exclamation marks on the page.`, hits: [], fix: 'Let the substance carry the energy. One exclamation mark at most.' });
+    const isFlagged = (b) => b && sentences(b.text).some((s) => flagged.has(s));
+    // Hype does not fulfil a stage: stage matching reads only the unflagged sentences of each block
+    const plain = B.map((b) => sentences(b.text).filter((s) => !flagged.has(s)).join(' '));
+    const locate = (rx, from) => {
+      let thin = -1;
+      for (let i = from; i < B.length; i++) {
+        if (!plain[i] || !rx.test(plain[i])) continue;
+        if (B[i].type === 'p' && words(plain[i]) >= 10) return { state: 'on', i };
+        if (thin < 0) thin = i;
+      }
+      return thin >= 0 ? { state: 'weak', i: thin } : { state: 'off', i: -1 };
+    };
+
+    // First sight
+    const headIdx = B.findIndex((b) => b.type === 'h');
+    const headline = headIdx >= 0 ? B[headIdx] : B[0];
+    const sub = B.slice(Math.max(headIdx, 0) + 1, Math.max(headIdx, 0) + 3).find((b) => b.type === 'p' && words(b.text) >= 8);
+    const CTA_SIGNOFF = /^(?:see you (?:there|soon)|talk soon|thanks(?: again)?|thank you|best(?: regards)?|regards)[.!]?$/i;
+    let actionCtas = doc.ctas.filter((c) => LEX.actionWords.test(c.text) && !CTA_SIGNOFF.test(c.text.trim()));
+    // Plain text has no buttons: fall back to the last short imperative sentence, such as "Reserve your seat now."
+    if (!actionCtas.length && doc.kind === 'text') {
+      const imperative = B.map((b, i) => ({ b, i })).filter(({ b }) => b.type === 'p' && words(b.text) <= 16 && LEX.actionWords.test(b.text) && !CTA_SIGNOFF.test(b.text.trim()));
+      if (imperative.length) { const last = imperative[imperative.length - 1]; actionCtas = [{ text: last.b.text, pos: last.i }]; }
+    }
+    const earlyCta = actionCtas.some((c) => c.pos <= Math.max(headIdx, 0) + 3);
+    let firstScore = 0;
+    if (headline) firstScore++;
+    if (headline && words(headline.text) <= 14) firstScore++;
+    if (sub) firstScore++;
+    if (earlyCta) firstScore++;
+    if (isFlagged(headline)) firstScore--;
+    if (isFlagged(sub)) firstScore--;
+    firstScore = Math.max(0, firstScore);
+    stage.first = { state: firstScore >= 3 ? 'on' : firstScore >= 1 ? 'weak' : 'off', i: headline ? B.indexOf(headline) : -1 };
+
+    for (const id of ['recognition', 'significance', 'tension', 'future', 'fit']) stage[id] = locate(LEX[id], 1);
+    // A limit placed on the reader ("you cannot outperform…") is rhetoric, not a limit of the offer.
+    const READER_NEGATION = /\byou\s+(?:cannot|can'?t|won'?t|do not|don'?t)\b/gi;
+    const BOUNDARY_DENIAL = /\b(?:this|it)\s+is\s+not\s+(?:hype|fluff|marketing|sales|pressure|forced positivity)\b/i;
+    const locateBoundary = () => {
+      let thin = -1;
+      for (let i = 1; i < B.length; i++) {
+        const candidate = sentences(plain[i]).filter((s) => !BOUNDARY_DENIAL.test(s)).map((s) => s.replace(READER_NEGATION, ' ')).join(' ');
+        if (!candidate || !LEX.boundaries.test(candidate)) continue;
+        if (B[i].type === 'p' && words(candidate) >= 10) return { state: 'on', i };
+        if (thin < 0) thin = i;
+      }
+      return thin >= 0 ? { state: 'weak', i: thin } : { state: 'off', i: -1 };
+    };
+    stage.boundaries = locateBoundary();
+    const listRun = B.filter((b) => b.list).length >= 3 || /\b(step|stage) (1|one)\b/i.test(text);
+    stage.mechanism = locate(LEX.mechanism, 1);
+    const mechanismNamed = stage.mechanism.state === 'on';
+    if (listRun && stage.mechanism.state !== 'on') stage.mechanism = { state: stage.mechanism.state === 'weak' ? 'on' : 'weak', i: B.findIndex((b) => b.list) };
+
+    // Evidence weight comes from proof-bearing copy, not from the mere presence of links.
+    const proofBlocks = B.filter((b, i) => b.type === 'p' && plain[i] && LEX.proof.test(plain[i])).length;
+    const proofEvidenceText = B.map((b, i) => (plain[i] && LEX.proof.test(plain[i]) ? plain[i] : '')).filter(Boolean).join('\n');
+    const numHits = (proofEvidenceText.match(LEX.number) || []).length;
+    const links = doc.meta ? doc.meta.externalLinks : 0;
+    stage.proof = proofBlocks > 0
+      ? (proofBlocks >= 2 || numHits >= 1 ? { state: 'on', i: B.findIndex((b) => LEX.proof.test(b.text)) } : { state: 'weak', i: B.findIndex((b) => LEX.proof.test(b.text)) })
+      : { state: 'off', i: -1 };
+
+    const distinctActions = [...new Set(actionCtas.map((c) => c.text.toLowerCase()))];
+    const vague = doc.ctas.filter((c) => VAGUE.test(c.text));
+    const next = LEX.nextStep.test(text);
+    stage.action = actionCtas.length ? { state: 'on', i: -1 } : vague.length ? { state: 'weak', i: -1 } : { state: 'off', i: -1 };
+
+    // Scores
+    const middle = ['recognition', 'significance', 'tension', 'mechanism', 'proof', 'future', 'fit', 'boundaries'];
+    const flowPts = middle.reduce((a, id) => a + (stage[id].state === 'on' ? 1 : stage[id].state === 'weak' ? 0.5 : 0), 0);
+    // Order is judged by the block that carries each stage (proof: the first proof paragraph with a figure),
+    // allowing one out-of-place pair because stage vocabulary overlaps.
+    const hasFigure = (s) => (s.match(LEX.number) || []).length > 0;
+    const proofCarrier = B.findIndex((b, i) => b.type === 'p' && plain[i] && LEX.proof.test(plain[i]) && hasFigure(plain[i]));
+    const at = (id) => (id === 'proof' && proofCarrier >= 0 ? proofCarrier : stage[id].i);
+    const placed = middle.filter((id) => at(id) >= 0).map(at);
+    let inversions = 0;
+    for (let a = 0; a < placed.length; a++) for (let b = a + 1; b < placed.length; b++) if (placed[a] > placed[b]) inversions++;
+    const journeyInOrder = inversions <= 1;
+    let flowScore = Math.round((flowPts / middle.length) * 4);
+    if (flowScore === 4 && !journeyInOrder) flowScore = 3;
+    const pts = (s) => (s.state === 'on' ? 1 : s.state === 'weak' ? 0.5 : 0);
+    let evidenceScore = 0;
+    if (proofBlocks === 1) evidenceScore = numHits >= 1 ? 2 : 1;
+    else if (proofBlocks === 2) evidenceScore = numHits >= 1 ? 3 : 2;
+    else if (proofBlocks >= 3) evidenceScore = numHits >= 1 ? 4 : 3;
+    const restraintCount = flags.length;
+    const scores = {
+      first: firstScore,
+      flow: flowScore,
+      mechanism: Math.min(4, Math.round(pts(stage.tension) * 1.5 + pts(stage.mechanism) * 1.5 + (listRun && mechanismNamed ? 1 : 0))),
+      evidence: evidenceScore,
+      restraint: restraintCount === 0 ? 4 : restraintCount <= 2 ? 3 : restraintCount <= 4 ? 2 : restraintCount <= 7 ? 1 : 0,
+      boundaries: Math.round(pts(stage.fit) * 2 + pts(stage.boundaries) * 2),
+      action: (actionCtas.length ? 1 : 0) + (distinctActions.length >= 1 && distinctActions.length <= 2 ? 1 : 0) + (actionCtas.length && !vague.length ? 1 : 0) + (next ? 1 : 0),
+      momentum: 0,
+      structure: null
+    };
+    // Momentum: skim story, short paragraphs, an early open loop, a strong close
+    const GENERIC_HEAD = /^(about( us)?|features?|services?|benefits?|overview|introduction|welcome.*|our (team|story|mission|services|approach)|why (us|choose us)|faq|faqs|contact( us)?|testimonials?|pricing|home|products?|solutions?|more|details|what you get|what's included|how it works)$/i;
+    const subHeads = B.filter((b) => b.type === 'h' && b.level > 1);
+    const genericHeads = subHeads.filter((b) => GENERIC_HEAD.test(b.text)).length;
+    const paras = B.filter((b) => b.type === 'p' && !b.list);
+    const paraWords = paras.map((b) => words(b.text));
+    const avgPara = paraWords.length ? paraWords.reduce((a, n) => a + n, 0) / paraWords.length : 0;
+    const early = B.slice(0, Math.max(3, Math.ceil(B.length * 0.4)));
+    const openLoop = early.some((b) => /\?/.test(b.text)) || (stage.tension.state === 'on' && stage.mechanism.i > stage.tension.i);
+    const strongClose = actionCtas.some((c) => c.pos >= B.length * 0.75) && B.slice(-4).some((b, i, a) => plain[B.length - a.length + i] && words(plain[B.length - a.length + i]) >= 8);
+    const momentum = {
+      skim: subHeads.length >= 3 && genericHeads / subHeads.length <= 0.25,
+      rhythm: paras.length > 0 && avgPara <= 45 && Math.max(...paraWords) <= 90,
+      openLoop, strongClose
+    };
+    scores.momentum = B.length < 4 ? Math.min(1, Object.values(momentum).filter(Boolean).length) : Object.values(momentum).filter(Boolean).length;
+    if (doc.meta) {
+      let s = 4; const m = doc.meta;
+      if (m.h1 !== 1) s--;
+      if (!m.lang || !m.title) s--;
+      if (m.noAlt > 0) s--;
+      if (m.skips > 0 || m.unlabeled > 0 || m.emptyLinks > 0) s--;
+      scores.structure = Math.max(0, s);
+    }
+    const scored = DIMS.filter((d) => scores[d.id] != null);
+    const avg = scored.reduce((a, d) => a + scores[d.id], 0) / scored.length;
+    const order = ['evidence', 'restraint', 'mechanism', 'flow', 'action', 'momentum', 'first', 'boundaries', 'structure'];
+    const bottleneck = scored.slice().sort((a, b) => scores[a.id] - scores[b.id] || order.indexOf(a.id) - order.indexOf(b.id))[0];
+    const missing = STAGES.filter((s) => stage[s.id].state === 'off').map((s) => s.name);
+    const primary = distinctActions.length ? actionCtas.find((c) => c.text.toLowerCase() === mostCommon(actionCtas.map((c) => c.text.toLowerCase()))).text : '';
+
+    return {
+      kind: doc.kind, blocks: B.length, stage, scores, avg, bottleneck, missing, flags, momentum,
+      action: { primary, distinct: distinctActions.length, vague: [...new Set(vague.map((v) => v.text))], next, early: earlyCta },
+      meta: doc.meta, headline: headline ? headline.text : '', evidence: { numHits, proofBlocks, links }, claims: claimsToVerify(B)
+    };
+  }
+
+  function mostCommon(list) {
+    const c = {}; let best = list[0]; for (const x of list) { c[x] = (c[x] || 0) + 1; if (c[x] > c[best]) best = x; } return best;
+  }
+
+  // ---------- rendering ----------
+  let current = null; let currentText = ''; let rewriteResult = null;
+
+  function verdictFor(r) {
+    if (r.avg >= 3.2) return ['Carries real gravitas.', 'The page moves from recognition to evidence to a clear action, and its language stays within what it can support.'];
+    if (r.avg >= 2.4) return ['A credible foundation with clear gaps.', 'The structure holds. Closing the gaps below will make it read as considered rather than promotional.'];
+    if (r.avg >= 1.6) return ['Persuasive in places, thin on proof.', 'The page creates momentum but asks for trust it has not yet earned on the page.'];
+    return ['Reads as promotion more than evidence.', 'Careful readers will notice the pressure before the substance. Start with the weakest link.'];
+  }
+
+  function render(r) {
+    current = r;
+    const [title, line] = verdictFor(r);
+    $('#verdictTitle').textContent = title;
+    $('#verdictText').textContent = `${line} Weakest link: ${r.bottleneck.name.toLowerCase()}.`;
+    $('#avgScore').textContent = r.avg.toFixed(1);
+
+    const rail = $('#rail'); rail.replaceChildren();
+    for (const s of STAGES) {
+      const st = r.stage[s.id].state;
+      const li = el('li', st === 'on' ? 'on' : st === 'weak' ? 'weak' : '');
+      li.append(el('span', 'dot'), el('span', 'nm', s.label || s.name));
+      li.title = `${s.name}: ${st === 'on' ? 'present' : st === 'weak' ? 'thin' : 'missing'}`;
+      rail.append(li);
+    }
+
+    const prof = $('#profile'); prof.replaceChildren();
+    for (const d of DIMS) {
+      const sc = r.scores[d.id];
+      const row = el('div', 'dim' + (sc == null ? ' na' : sc <= 1 ? ' low' : '') + (d.id === r.bottleneck.id ? ' bottleneck' : ''));
+      const nm = el('span', 'nm', d.name);
+      if (d.id === r.bottleneck.id) nm.append(el('span', 'tag', 'Weakest'));
+      const meter = el('span', 'meter'); meter.setAttribute('aria-hidden', 'true');
+      for (let i = 0; i < 4; i++) meter.append(el('span', sc != null && i < sc ? 'f' : ''));
+      row.append(nm, meter, el('span', 'sc', sc == null ? 'n/a' : `${sc}/4`), el('span', 'an', sc == null ? 'Paste HTML to assess structure' : d.anchors[sc]));
+      prof.append(row);
+    }
+
+    const moves = $('#moves'); moves.replaceChildren();
+    const ranked = DIMS.filter((d) => r.scores[d.id] != null && r.scores[d.id] <= 2).sort((a, b) => r.scores[a.id] - r.scores[b.id]);
+    const list = ranked.length ? ranked.slice(0, 4) : [r.bottleneck];
+    for (const d of list) {
+      const li = el('li'); li.append(el('b', '', d.name + '. '), document.createTextNode(MOVES[d.id](r))); moves.append(li);
+    }
+    if (!ranked.length) moves.append(el('li', '', 'Test the page with five people from its intended audience and ask them to explain it back in their own words.'));
+    $('#leadMove').textContent = moves.firstElementChild ? moves.firstElementChild.textContent : '';
+    const claimList = $('#claims'); claimList.replaceChildren();
+    if (!r.claims.length) claimList.append(el('li', 'empty', 'No factual or measurable claims detected. Check any figures or references you add.'));
+    for (const c of r.claims) claimList.append(el('li', '', c));
+
+    const flags = $('#flags'); flags.replaceChildren();
+    if (!r.flags.length) flags.append(el('p', 'empty', 'No inflated, pressured, or certainty language found.'));
+    for (const f of r.flags.slice(0, 12)) {
+      const box = el('div', 'flag' + (f.sev === 'bad' ? ' bad' : ''));
+      box.append(el('span', 'k', f.kind));
+      const q = el('q'); highlight(q, f.sentence, f.hits); box.append(q, el('p', '', f.fix));
+      flags.append(box);
+    }
+    if (r.flags.length > 12) flags.append(el('p', 'empty', `${r.flags.length - 12} more in the full report.`));
+
+    const kv = (dl, pairs) => { dl.replaceChildren(); for (const [k, v] of pairs) { dl.append(el('dt', '', k), el('dd', '', v)); } };
+    kv($('#actionKv'), [
+      ['Primary action', r.action.primary || 'None found'],
+      ['Competing actions', String(r.action.distinct)],
+      ['Vague labels', r.action.vague.length ? r.action.vague.join(', ') : 'None'],
+      ['What happens next', r.action.next ? 'Explained' : 'Not explained'],
+      ['On the first screen', r.action.early ? 'Yes' : 'No']
+    ]);
+    if (r.meta) {
+      const m = r.meta;
+      kv($('#structKv'), [
+        ['H1 headings', String(m.h1)], ['Language', m.lang || 'Not set'], ['Title', m.title || 'Missing'],
+        ['Images without alt', `${m.noAlt} of ${m.imgs}`], ['Unlabeled fields', String(m.unlabeled)], ['Skipped heading levels', String(m.skips)]
+      ]);
+    } else {
+      kv($('#structKv'), [['Assessed', 'Paste the HTML source to check headings, language, alt text, and labels']]);
+    }
+  }
+
+  function highlight(node, sentence, hits) {
+    if (!hits.length) { node.textContent = sentence; return; }
+    const rx = new RegExp('(' + hits.map((h) => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'gi');
+    let last = 0;
+    for (const m of sentence.matchAll(rx)) {
+      if (m.index > last) node.append(document.createTextNode(sentence.slice(last, m.index)));
+      node.append(el('mark', '', m[0]));
+      last = m.index + m[0].length;
+    }
+    if (last < sentence.length) node.append(document.createTextNode(sentence.slice(last)));
+  }
+
+  // Statements that assert something checkable: figures, results, rankings, or evidence words.
+  const CLAIM_SIGNAL = /(\d|%|\$|\b(proven|tested|verified|validated|certified|results?|customers?|clients?|users?|trusted|leading|largest|fastest|only|first|studies|study|research|data|award|ranked|guarantee[ds]?|income|revenue|profit|wealth|financial|quantum leaps?|reprogram(?:med|ming)?|permanent(?:ly)?|for good|every|always|never)\b|\b(?:one|two|three|four|five|six|seven|eight|nine)(?:\s+and\s+(?:one|two|three|four|five|six|seven|eight|nine))?\s*[- ]?figure\b)/i;
+  function claimsToVerify(blocks) {
+    const seen = new Set(); const out = [];
+    for (const b of blocks) for (const s of sentences(b.text)) {
+      if (words(s) < 5 || !CLAIM_SIGNAL.test(s) || seen.has(s)) continue;
+      seen.add(s); out.push(s); if (out.length >= 8) return out;
+    }
+    return out;
+  }
+
+  function runCheck() {
+    const raw = $('#specimen').value;
+    if (!clean(raw)) {
+      $('#verdictTitle').textContent = 'Paste a page to begin.';
+      $('#verdictText').textContent = 'Use the page text or its HTML source. HTML adds the structure and accessibility checks.';
+      $('#specMeta').textContent = '';
+      $('#leadMove').textContent = 'Your first move appears here after a check.';
+      return;
+    }
+    const doc = parse(raw);
+    currentText = doc.blocks.map((b) => (b.type === 'h' ? '#'.repeat(Math.min(b.level || 2, 6)) + ' ' : '') + b.text).join('\n\n');
+    const r = analyze(doc);
+    const n = doc.ctas.length;
+    $('#specMeta').textContent = `${doc.kind === 'html' ? 'HTML' : 'Text'} · ${r.blocks} block${r.blocks === 1 ? '' : 's'} · ${n} ${n === 1 ? 'link or button' : 'links or buttons'}`;
+    rewriteResult = null; $('#outline').replaceChildren(); $('#rewriteStatus').textContent = '';
+    render(r);
+  }
+
+  // ---------- report ----------
+  function reportMarkdown() {
+    const r = current; if (!r) return '';
+    const [title, line] = verdictFor(r);
+    const out = [`# Gravitas Report`, '', `Checked ${new Date().toISOString().slice(0, 10)} · ${r.kind === 'html' ? 'HTML' : 'text'} input · ${r.blocks} blocks`, '', `## ${title}`, '', `${line} Weakest link: ${r.bottleneck.name.toLowerCase()}.`, '', `Profile average: ${r.avg.toFixed(1)} of 4`, '', '## Profile', '', '| Dimension | Score | Reading |', '|---|---|---|'];
+    for (const d of DIMS) { const s = r.scores[d.id]; out.push(`| ${d.name} | ${s == null ? 'n/a' : s + '/4'} | ${s == null ? 'Not assessed for text input' : d.anchors[s]} |`); }
+    out.push('', '## Journey', '');
+    for (const s of STAGES) { const st = r.stage[s.id].state; out.push(`- ${s.name}: ${st === 'on' ? 'present' : st === 'weak' ? 'thin' : 'missing'}`); }
+    out.push('', '## Next moves', '');
+    [...document.querySelectorAll('#moves li')].forEach((li, i) => out.push(`${i + 1}. ${li.textContent}`));
+    out.push('', '## Language to reconsider', '');
+    if (!r.flags.length) out.push('None found.');
+    for (const f of r.flags) out.push(`- **${f.kind}:** "${f.sentence}" — ${f.fix}`);
+    out.push('', '## Claims to verify', '', ...(r.claims.length ? r.claims.map((c) => `- ${c}`) : ['None detected.']));
+    out.push('', '## Action', '', `- Primary action: ${r.action.primary || 'none found'}`, `- Competing actions: ${r.action.distinct}`, `- Vague labels: ${r.action.vague.join(', ') || 'none'}`, `- What happens next: ${r.action.next ? 'explained' : 'not explained'}`);
+    if (r.meta) out.push('', '## Structure', '', `- H1 headings: ${r.meta.h1}`, `- Language: ${r.meta.lang || 'not set'}`, `- Title: ${r.meta.title || 'missing'}`, `- Images without alt: ${r.meta.noAlt} of ${r.meta.imgs}`, `- Unlabeled fields: ${r.meta.unlabeled}`, `- Skipped heading levels: ${r.meta.skips}`);
+    out.push('', '---', `Method: ${PROTOCOL_URL}`, '', 'The check reads signals in the words and structure of a page. It points to likely gaps; it does not prove what a reader will feel or do.');
+    return out.join('\n');
+  }
+
+
+
+  function findingsText() {
+    const r = current;
+    return [`Profile: ${DIMS.map((d) => `${d.name} ${r.scores[d.id] == null ? 'n/a' : r.scores[d.id] + '/4'}`).join('; ')}`, `Missing stages: ${r.missing.join(', ') || 'none'}`, `Flagged phrases: ${r.flags.map((f) => f.hits.join(', ')).filter(Boolean).join('; ') || 'none'}`].join('\n');
+  }
+
+  function agentPrompt() {
+    return [
+      `Feed this page through the Gravitas Engine. The full method is at ${PROTOCOL_URL}. Read it, run Transform mode, and return the Gravitas Report in its exact format, including the rebuilt page.`,
+      '',
+      'If you cannot open the link, apply these essentials: map the 10 stages (First sight, Recognition, Significance, Tension, Mechanism, Proof, Credible future, Fit, Boundaries, Action); score First sight, Narrative flow, Tension and mechanism, Evidence, Restraint, Fit and boundaries, Action clarity, Momentum, and Structure and access from 0 to 4; replace hype, guarantees, fake urgency, and vague actions; rebuild the page stage by stage; never invent facts, and mark missing proof as [Add proof: …].',
+      '',
+      'Automated check findings:',
+      findingsText(),
+      '',
+      'Page:',
+      '"""',
+      currentText.slice(0, 20000),
+      '"""'
+    ].join('\n');
+  }
+
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); return true; }
+    catch (e) {
+      const ta = el('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+      document.body.append(ta); ta.select();
+      let ok = false; try { ok = document.execCommand('copy'); } catch (_) { ok = false; }
+      ta.remove(); return ok;
+    }
+  }
+
+  $('#copyPrompt').addEventListener('click', async () => {
+    if (!current) return;
+    const ok = await copyText(agentPrompt());
+    $('#rewriteStatus').textContent = ok ? 'Prompt copied. Paste it into any AI assistant.' : 'Copying is blocked in this view.';
+  });
+
+  function buildPrompt() {
+    const findings = findingsText();
+    return [
+      'Rewrite the web page below using the Gravitas method: a credible page earns attention with relevance, then earns trust with evidence, and ends with one clear action.',
+      '',
+      'Rules:',
+      '- Use only facts present in the source. Never invent numbers, names, clients, results, dates, credentials, or quotes.',
+      '- Where a stage needs proof or detail the source does not contain, write a bracketed note such as [Add proof: a result with its source].',
+      '- Remove hype, guarantees, artificial urgency, crowd claims without counts, and secret or destiny framing. Prefer calm, plain, specific language.',
+      '- Build momentum: headings that tell the story on their own, an early open question that a later section answers, short paragraphs, and a close on the clearest outcome before the action.',
+      '- Write ten sections in this order, one per stage: First sight, Recognition, Significance, Tension, Mechanism, Proof, Credible future, Fit, Boundaries, Action.',
+      '- Each body is one to three sentences. Headings are under ten words.',
+      '- In the same language as the source.',
+      '',
+      'Reply with only JSON in this shape:',
+      '{"audience": "who the page is for", "decision": "the decision it supports", "sections": [{"stage": "First sight", "heading": "...", "body": "..."}], "claimsToVerify": [{"claim": "...", "note": "what evidence would support it"}], "cta": {"label": "...", "next": "what happens after the visitor acts"}}',
+      '',
+      'Findings from the automated check:',
+      findings,
+      '',
+      'Source page:',
+      '"""',
+      currentText.slice(0, 14000),
+      '"""'
+    ].join('\n');
+  }
+
+
+  $('#saveReport').addEventListener('click', async () => {
+    if (!current) return;
+    const data = reportMarkdown();
+    const a = el('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'text/markdown' })); a.download = 'gravitas-report.md';
+    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    $('#reportStatus').textContent = 'Report downloaded.';
+  });
+  $('#copyReport').addEventListener('click', async () => {
+    if (!current) return;
+    const ok = await copyText(reportMarkdown());
+    $('#reportStatus').textContent = ok ? 'Report copied.' : 'Copying is blocked in this view. Use Download report instead.';
+  });
+
+  // ---------- input ----------
+  const samples = { hype: $('#sampleA').textContent.trim(), evidence: $('#sampleB').textContent.trim() };
+  function loadSample(which) {
+    $('#specimen').value = samples[which];
+    $('#sampleHype').setAttribute('aria-pressed', String(which === 'hype'));
+    $('#sampleEvidence').setAttribute('aria-pressed', String(which === 'evidence'));
+    $('#exampleNote').hidden = false;
+    $('#exampleNote').textContent = which === 'hype' ? 'Showing an invented promotional page. Paste your own page to replace it.' : 'Showing a sample page produced by the Gravitas Engine. Paste your own page to replace it.';
+    runCheck();
+  }
+  $('#sampleHype').addEventListener('click', () => loadSample('hype'));
+  $('#sampleEvidence').addEventListener('click', () => loadSample('evidence'));
+  $('#clearInput').addEventListener('click', () => {
+    $('#specimen').value = ''; $('#exampleNote').hidden = true;
+    $('#sampleHype').setAttribute('aria-pressed', 'false'); $('#sampleEvidence').setAttribute('aria-pressed', 'false');
+    $('#specimen').focus(); runCheck();
+  });
+  $('#runCheck').addEventListener('click', () => {
+    $('#exampleNote').hidden = true;
+    $('#sampleHype').setAttribute('aria-pressed', 'false'); $('#sampleEvidence').setAttribute('aria-pressed', 'false');
+    runCheck();
+  });
+
+  const readFile = (file) => {
+    if (!file) return;
+    if (file.size > 3_000_000) { $('#specMeta').textContent = 'That file is over 3 MB. Paste the main content instead.'; return; }
+    const fr = new FileReader();
+    fr.onload = () => { $('#specimen').value = String(fr.result || ''); $('#exampleNote').hidden = true; $('#sampleHype').setAttribute('aria-pressed', 'false'); $('#sampleEvidence').setAttribute('aria-pressed', 'false'); runCheck(); };
+    fr.readAsText(file);
+  };
+  $('#fileInput').addEventListener('change', (e) => readFile(e.target.files && e.target.files[0]));
+  const drop = $('#drop');
+  ['dragenter', 'dragover'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', (e) => readFile(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]));
+
+  loadSample('hype');
+})();
+</script>
+</body>
+</html>
