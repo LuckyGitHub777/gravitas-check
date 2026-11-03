@@ -40,11 +40,3 @@ The site includes **Gravitas Check**: paste a page's text or HTML, or drop a fil
 ## Terms
 
 © 2026 Gravitas Engine. All rights reserved. You may read the method and apply it to your own pages, and use the checker freely. Republishing or reselling the protocol or code requires written permission.
-
-## Art × Science | The Creative Museum
-
-Gravitas Check is the museum's web-design and critical-evaluation exhibit. The tool supports thoughtful questions about attention, comprehension, credibility and reader experience; it is not an independent certification of a site's trustworthiness. Its use and redistribution remain subject to the Terms above.
-
-Explore the [temporary LuckyGitHub777 Art × Science Museum preview](https://luckygithub777.github.io/golden-ratio-frequency-lab/museum-preview/) and its safe Origins Lab. This is a public visitor preview within an existing Pages site; it is not yet the final dedicated museum. The underlying private workshops and source histories are not exposed through this link. Full signed-out browser acceptance remains separately tracked.
-
-*Imagination opens the door. Engineering makes it real. Evidence keeps us honest.*
