@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-E/U1ukOTaX2QpVIhzu5fUs2e0WUrYYeAsAF7X7kIWbg='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-g/3BcHn8aNUEsyyxFaZSDe7uB8erfwGMGYZlvkOXMUQ='; style-src 'sha256-T3xcIGW2b2+hokpuTBLaSXbhXLLBNsOhTmGE/j69YBQ=' 'sha256-BS8rXKdP9WGGMB3o22gSf2LjUYi7pusBjPh4WDqoTAI=' 'sha256-IAdwN3biDCQ3brrgp1m8kBEsPQYyqfREKOEfeoREopc='; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Feed a page through Gravitas: its journey, a nine-dimension profile, the weakest link, and the one change that would lift it most. Public-safe information only.">
@@ -231,6 +231,8 @@ details.panel[open] > summary { margin-bottom: 12px; }
 .method th, .method td { text-align: left; vertical-align: top; padding: 9px 12px; border-top: 1px solid var(--line); }
 .method thead th { border-top: 0; font: 500 11.5px/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 .method td { min-width: 9rem; }
+
+.copy-fallback{position:fixed;left:-9999px;top:0;opacity:0}
 </style>
 <style>body{margin:0}</style>
 </head>
@@ -1326,7 +1328,7 @@ details.panel[open] > summary { margin-bottom: 12px; }
   async function copyText(text) {
     try { await navigator.clipboard.writeText(text); return true; }
     catch (e) {
-      const ta = el('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+      const ta = el('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.className = 'copy-fallback';
       document.body.append(ta); ta.select();
       let ok = false; try { ok = document.execCommand('copy'); } catch (_) { ok = false; }
       ta.remove(); return ok;
