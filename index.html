@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-QeeVbouTmYDITjjZJexSLOOhF9tQOZEEL0Z5w3tn78c='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-E/U1ukOTaX2QpVIhzu5fUs2e0WUrYYeAsAF7X7kIWbg='; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Feed a page through Gravitas: its journey, a nine-dimension profile, the weakest link, and the one change that would lift it most. Public-safe information only.">
@@ -1257,6 +1257,14 @@ details.panel[open] > summary { margin-bottom: 12px; }
   function runCheck() {
     const raw = $('#specimen').value;
     if (!clean(raw)) {
+      // Clear in-memory and visible results when the visitor starts over.
+      current = null;
+      currentText = '';
+      rewriteResult = null;
+      for (const id of ['rail', 'profile', 'moves', 'flags', 'claims', 'actionKv', 'structKv', 'outline']) $('#' + id).replaceChildren();
+      $('#avgScore').textContent = '–';
+      $('#rewriteStatus').textContent = '';
+      $('#reportStatus').textContent = '';
       $('#verdictTitle').textContent = 'Paste a page to begin.';
       $('#verdictText').textContent = 'Use the page text or its HTML source. HTML adds the structure and accessibility checks.';
       $('#specMeta').textContent = '';
