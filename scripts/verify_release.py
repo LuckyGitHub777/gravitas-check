@@ -12,8 +12,11 @@ FILES={'.nojekyll','LICENSE','README.md','SECURITY.md','gravitas.md',
 class Parser(HTMLParser):
     def __init__(self):
         super().__init__();self.scripts=[];self.typ=None;self.buf=[];self.csp='';self.canonical=[];self.remote=[]
+        self.styles=[];self.in_style=False;self.style_buf=[];self.style_attrs=[]
     def handle_starttag(self,tag,attrs):
         a=dict(attrs)
+        if 'style' in a:self.style_attrs.append(tag)
+        if tag=='style':self.in_style=True;self.style_buf=[]
         if tag=='script':
             self.typ=(a.get('type') or '').lower();self.buf=[]
             if a.get('src'):self.remote.append('script')
@@ -25,7 +28,10 @@ class Parser(HTMLParser):
             if rel in {'stylesheet','modulepreload','preload'} and href.startswith(('http:','https:')):self.remote.append('link')
     def handle_data(self,data):
         if self.typ is not None:self.buf.append(data)
+        if self.in_style:self.style_buf.append(data)
     def handle_endtag(self,tag):
+        if tag=='style' and self.in_style:
+            self.styles.append(''.join(self.style_buf));self.in_style=False;self.style_buf=[]
         if tag=='script' and self.typ is not None:
             self.scripts.append((self.typ,''.join(self.buf)));self.typ=None;self.buf=[]
 def check():
@@ -49,7 +55,14 @@ def check():
     assert len(runtime)==1,'unexpected executable scripts'
     digest=base64.b64encode(hashlib.sha256(runtime[0].encode('utf-8')).digest()).decode('ascii')
     assert "'sha256-"+digest+"'" in p.csp,'CSP inline script hash invalid'
-    assert len(re.findall(r"'sha256-[A-Za-z0-9+/=]+'",p.csp))==1,'unexpected extra CSP hash'
+    assert "'unsafe-inline'" not in p.csp and not p.style_attrs,'inline style policy or attributes'
+    assert len(p.styles)==3,'unexpected style block count'
+    for style in p.styles:
+        digest=base64.b64encode(hashlib.sha256(style.encode('utf-8')).digest()).decode('ascii')
+        assert "style-src " in p.csp and "'sha256-"+digest+"'" in p.csp,'CSP inline style hash invalid'
+    assert len(re.findall(r"'sha256-[A-Za-z0-9+/=]+'",p.csp))==1+len(p.styles),'unreviewed CSP hash count'
+    assert 'style.cssText' not in runtime[0] and "ta.className = 'copy-fallback';" in runtime[0],'unsafe copy fallback inline style'
+    assert '.copy-fallback{' in ''.join(p.styles),'missing copy fallback CSS'
     assert SITE+'gravitas.md' in html,'protocol URL mismatch'
     assert SITE in (ROOT/'README.md').read_text(encoding='utf-8'),'README URL mismatch'
     assert SITE+'gravitas.md' in (ROOT/'llms.txt').read_text(encoding='utf-8'),'AI reference URL mismatch'
