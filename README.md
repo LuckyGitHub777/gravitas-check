@@ -4,6 +4,8 @@ A method for web pages that hold attention, earn trust, and move people to act, 
 
 **Open it:** https://luckygithub777.github.io/gravitas-check/
 
+**Try it immediately:** Choose **Example: hype-led promo** or **Example: evidence-led page**, then select **Check this page**. Both examples are invented, so you can explore the report without sharing your own material.
+
 Public reference. Use only public-safe material with hosted tools or external assistants. Sensitive work belongs in an authorized private or local environment.
 
 ## Use it with any AI
