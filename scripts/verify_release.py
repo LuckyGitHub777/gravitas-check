@@ -54,6 +54,13 @@ def check():
     assert SITE in (ROOT/'README.md').read_text(encoding='utf-8'),'README URL mismatch'
     assert SITE+'gravitas.md' in (ROOT/'llms.txt').read_text(encoding='utf-8'),'AI reference URL mismatch'
     assert not re.search(r'(?:\bfetch\s*\(|\bXMLHttpRequest\b|\bsendBeacon\b|\bWebSocket\b|\bEventSource\b|\blocalStorage\b|\bindexedDB\b|\binnerHTML\b|\bouterHTML\b)',runtime[0]),'unexpected remote/storage/HTML call'
+    # Clearing an input must erase previous in-memory report/prompt content and its rendered result.
+    assert 'function runCheck() {' in runtime[0] and 'const doc = parse(raw);' in runtime[0], 'runCheck boundary missing'
+    blank = runtime[0].split('function runCheck() {', 1)[1].split('const doc = parse(raw);', 1)[0]
+    assert 'if (!clean(raw)) {' in blank, 'blank input guard missing'
+    for required in ("current = null;", "currentText = '';", "rewriteResult = null;", "'rail'", "'profile'", "'moves'", "'flags'", "'claims'", "'actionKv'", "'structKv'", "'outline'", "'#avgScore'", "'#rewriteStatus'", "'#reportStatus'"):
+        assert required in blank, 'blank input does not clear prior report'
+    assert "$('#specimen').focus(); runCheck();" in runtime[0], 'clear control does not run reset'
     return runtime[0]
 if __name__=='__main__':
     try:
