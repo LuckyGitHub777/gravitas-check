@@ -29,7 +29,9 @@ Ask for **Check** (score only), **Transform** (score and rebuild, the default fo
 
 ## Use it in the browser
 
-The site includes **Gravitas Check**: paste a page's text or HTML, or drop a file, and see the journey, the profile, flagged language, and next moves straight away. It runs entirely in your browser, loads nothing from other sites, and stores nothing. **Copy prompt for an assistant** packages the page and findings for a full rewrite in the assistant of your choice.
+The site includes **Gravitas Check**: paste a page's text or HTML, or drop a file, and see the journey, the profile, flagged language, and next moves straight away. It runs entirely in your browser, loads nothing from other sites, and stores nothing.
+
+**Report accuracy:** Editing the source text invalidates the previous report and its copy/download actions. Choose **Check this page** again to generate a report for the revised content. **Copy prompt for an assistant** packages the page and findings for a full rewrite in the assistant of your choice.
 
 ## Files
 

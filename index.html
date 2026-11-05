@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-g/3BcHn8aNUEsyyxFaZSDe7uB8erfwGMGYZlvkOXMUQ='; style-src 'sha256-T3xcIGW2b2+hokpuTBLaSXbhXLLBNsOhTmGE/j69YBQ=' 'sha256-BS8rXKdP9WGGMB3o22gSf2LjUYi7pusBjPh4WDqoTAI=' 'sha256-IAdwN3biDCQ3brrgp1m8kBEsPQYyqfREKOEfeoREopc='; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-IPBM4rWTPHG2X/+nRqBLNd4ZAnUHegZFfpREf6tNOuM='; style-src 'sha256-T3xcIGW2b2+hokpuTBLaSXbhXLLBNsOhTmGE/j69YBQ=' 'sha256-BS8rXKdP9WGGMB3o22gSf2LjUYi7pusBjPh4WDqoTAI=' 'sha256-IAdwN3biDCQ3brrgp1m8kBEsPQYyqfREKOEfeoREopc='; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Feed a page through Gravitas: its journey, a nine-dimension profile, the weakest link, and the one change that would lift it most. Public-safe information only.">
@@ -1380,6 +1380,24 @@ details.panel[open] > summary { margin-bottom: 12px; }
     if (!current) return;
     const ok = await copyText(reportMarkdown());
     $('#reportStatus').textContent = ok ? 'Report copied.' : 'Copying is blocked in this view. Use Download report instead.';
+  });
+
+  // Unsaved edits invalidate findings from the previously checked content.
+  $('#specimen').addEventListener('input', () => {
+    current = null;
+    currentText = '';
+    rewriteResult = null;
+    for (const id of ['rail', 'profile', 'moves', 'flags', 'claims', 'actionKv', 'structKv', 'outline']) $('#' + id).replaceChildren();
+    $('#avgScore').textContent = '–';
+    $('#rewriteStatus').textContent = '';
+    $('#reportStatus').textContent = '';
+    $('#verdictTitle').textContent = 'Page changed — check it again.';
+    $('#verdictText').textContent = 'Previous findings and copy actions are unavailable until the edited page is checked.';
+    $('#specMeta').textContent = '';
+    $('#leadMove').textContent = 'Check this page to see next moves.';
+    $('#exampleNote').hidden = true;
+    $('#sampleHype').setAttribute('aria-pressed', 'false');
+    $('#sampleEvidence').setAttribute('aria-pressed', 'false');
   });
 
   // ---------- input ----------

@@ -74,6 +74,13 @@ def check():
     for required in ("current = null;", "currentText = '';", "rewriteResult = null;", "'rail'", "'profile'", "'moves'", "'flags'", "'claims'", "'actionKv'", "'structKv'", "'outline'", "'#avgScore'", "'#rewriteStatus'", "'#reportStatus'"):
         assert required in blank, 'blank input does not clear prior report'
     assert "$('#specimen').focus(); runCheck();" in runtime[0], 'clear control does not run reset'
+    # Edited content must invalidate stale reports, prompts and visible findings.
+    assert "$('#specimen').addEventListener('input', () => {" in runtime[0], 'unsaved input invalidation missing'
+    edited = runtime[0].split("$('#specimen').addEventListener('input', () => {", 1)[1].split("\n  });", 1)[0]
+    for required in ("current = null;", "currentText = '';", "rewriteResult = null;",
+                     "'rail'", "'profile'", "'moves'", "'flags'", "'claims'", "'actionKv'",
+                     "'structKv'", "'outline'", "'#reportStatus'", "'#rewriteStatus'"):
+        assert required in edited, 'editing the source can retain stale output'
     return runtime[0]
 if __name__=='__main__':
     try:
