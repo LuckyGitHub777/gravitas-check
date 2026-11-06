@@ -48,6 +48,7 @@ The site includes **Gravitas Check**: paste a page's text or HTML, or drop a fil
 ## Elsewhere to explore
 
 - [The Mysteries of Eleusis](https://github.com/LuckyGitHub777/mysteries-of-eleusis) — a quiet, self-contained historical and artistic journey.
+- [Signal Archive](https://github.com/LuckyGitHub777/project-blue-box-signal-archive) — an offline fictional receiver experience, separate from live signals or detections.
 - [Guardian](https://github.com/LuckyGitHub777/guardian-assurance-public) — a separate local-first tool for bounded publication checks.
 
 [Browse the other public projects](https://github.com/LuckyGitHub777?tab=repositories).
