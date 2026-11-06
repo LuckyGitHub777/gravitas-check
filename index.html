@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-IPBM4rWTPHG2X/+nRqBLNd4ZAnUHegZFfpREf6tNOuM='; style-src 'sha256-T3xcIGW2b2+hokpuTBLaSXbhXLLBNsOhTmGE/j69YBQ=' 'sha256-BS8rXKdP9WGGMB3o22gSf2LjUYi7pusBjPh4WDqoTAI=' 'sha256-IAdwN3biDCQ3brrgp1m8kBEsPQYyqfREKOEfeoREopc='; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-8Cy1fyfwvzoT1g5t4kgPxxdAj1YHb8hjFJwXkR5FxyU='; style-src 'sha256-T3xcIGW2b2+hokpuTBLaSXbhXLLBNsOhTmGE/j69YBQ=' 'sha256-BS8rXKdP9WGGMB3o22gSf2LjUYi7pusBjPh4WDqoTAI=' 'sha256-IAdwN3biDCQ3brrgp1m8kBEsPQYyqfREKOEfeoREopc='; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'self'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Feed a page through Gravitas: its journey, a nine-dimension profile, the weakest link, and the one change that would lift it most. Public-safe information only.">
@@ -1382,8 +1382,10 @@ details.panel[open] > summary { margin-bottom: 12px; }
     $('#reportStatus').textContent = ok ? 'Report copied.' : 'Copying is blocked in this view. Use Download report instead.';
   });
 
+  let inputRevision = 0;
   // Unsaved edits invalidate findings from the previously checked content.
   $('#specimen').addEventListener('input', () => {
+    ++inputRevision;
     current = null;
     currentText = '';
     rewriteResult = null;
@@ -1403,6 +1405,7 @@ details.panel[open] > summary { margin-bottom: 12px; }
   // ---------- input ----------
   const samples = { hype: $('#sampleA').textContent.trim(), evidence: $('#sampleB').textContent.trim() };
   function loadSample(which) {
+    ++inputRevision;
     $('#specimen').value = samples[which];
     $('#sampleHype').setAttribute('aria-pressed', String(which === 'hype'));
     $('#sampleEvidence').setAttribute('aria-pressed', String(which === 'evidence'));
@@ -1413,11 +1416,13 @@ details.panel[open] > summary { margin-bottom: 12px; }
   $('#sampleHype').addEventListener('click', () => loadSample('hype'));
   $('#sampleEvidence').addEventListener('click', () => loadSample('evidence'));
   $('#clearInput').addEventListener('click', () => {
+    ++inputRevision;
     $('#specimen').value = ''; $('#exampleNote').hidden = true;
     $('#sampleHype').setAttribute('aria-pressed', 'false'); $('#sampleEvidence').setAttribute('aria-pressed', 'false');
     $('#specimen').focus(); runCheck();
   });
   $('#runCheck').addEventListener('click', () => {
+    ++inputRevision;
     $('#exampleNote').hidden = true;
     $('#sampleHype').setAttribute('aria-pressed', 'false'); $('#sampleEvidence').setAttribute('aria-pressed', 'false');
     runCheck();
@@ -1425,9 +1430,21 @@ details.panel[open] > summary { margin-bottom: 12px; }
 
   const readFile = (file) => {
     if (!file) return;
+    // Later edits, checks, samples or file selections must win over this read.
+    const revision = ++inputRevision;
     if (file.size > 3_000_000) { $('#specMeta').textContent = 'That file is over 3 MB. Paste the main content instead.'; return; }
     const fr = new FileReader();
-    fr.onload = () => { $('#specimen').value = String(fr.result || ''); $('#exampleNote').hidden = true; $('#sampleHype').setAttribute('aria-pressed', 'false'); $('#sampleEvidence').setAttribute('aria-pressed', 'false'); runCheck(); };
+    fr.onload = () => {
+      if (revision !== inputRevision) return;
+      $('#specimen').value = String(fr.result || '');
+      $('#exampleNote').hidden = true;
+      $('#sampleHype').setAttribute('aria-pressed', 'false');
+      $('#sampleEvidence').setAttribute('aria-pressed', 'false');
+      runCheck();
+    };
+    fr.onerror = () => {
+      if (revision === inputRevision) $('#specMeta').textContent = 'The file could not be read. Paste the main content instead.';
+    };
     fr.readAsText(file);
   };
   $('#fileInput').addEventListener('change', (e) => readFile(e.target.files && e.target.files[0]));
