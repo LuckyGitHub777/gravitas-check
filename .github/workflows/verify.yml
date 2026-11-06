@@ -20,3 +20,5 @@ jobs:
         run: python scripts/verify_release.py --emit-runtime "$RUNNER_TEMP/gravitas.js"
       - name: Check JavaScript syntax
         run: node --check "$RUNNER_TEMP/gravitas.js"
+      - name: Test local file-read stale-callback behavior
+        run: node scripts/test_file_read_race.cjs
