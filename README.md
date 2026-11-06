@@ -1,10 +1,10 @@
-# Gravitas Engine
+# Gravitas Check
 
-A method for web pages that hold attention, earn trust, and move people to act, built on research in attention, comprehension, persuasion, and credibility, refined by what works on real pages.
+**[Open the live interactive demo](https://luckygithub777.github.io/gravitas-check/)** — examine what makes a page clear, credible, and worth acting on.
 
-**Open it:** https://luckygithub777.github.io/gravitas-check/
+Start with **Example: hype-led promo** or **Example: evidence-led page**, then select **Check this page**. The built-in examples are fictional, so you can explore the report without sharing your own material. The checker runs locally in your browser; no account or installation is required.
 
-**Try it immediately:** Choose **Example: hype-led promo** or **Example: evidence-led page**, then select **Check this page**. Both examples are invented, so you can explore the report without sharing your own material.
+The underlying **Gravitas Engine** is a method for evaluating attention, comprehension, persuasion, and credibility and turning observations into practical edits.
 
 Public reference. Use only public-safe material with hosted tools or external assistants. Sensitive work belongs in an authorized private or local environment.
 
