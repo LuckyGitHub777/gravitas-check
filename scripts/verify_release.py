@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 SITE='https://luckygithub777.github.io/gravitas-check/'
 FILES={'.nojekyll','LICENSE','README.md','SECURITY.md','gravitas.md',
-       'index.html','llms.txt','PUBLICATION-PROVENANCE.md',
+       'index.html','llms.txt','LICENSE-SUMMARY.md',
        'scripts/verify_release.py','scripts/test_file_read_race.cjs','.github/workflows/verify.yml'}
 class Parser(HTMLParser):
     def __init__(self):
