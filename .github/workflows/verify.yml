@@ -1,4 +1,4 @@
-name: Verify Gravitas Check Public Distribution
+name: Verify Gravitas Check
 on:
   push:
     branches: [main]
