@@ -1,4 +1,4 @@
-"""Public distribution verification: no network, account secrets or old source history."""
+"""Release verification: no network or account secrets."""
 from __future__ import annotations
 import base64, hashlib, re, subprocess, sys
 from html.parser import HTMLParser
